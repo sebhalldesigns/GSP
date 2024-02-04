@@ -78,6 +78,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{B856E7B2-4B19-36FA-AB27-8412554059D2}</Project>
       <Name>GSP</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\sebam\Documents\GSP\src\build\Graphics\GSP-Graphics.vcxproj">
+      <Project>{987B1A70-361D-3227-B03C-A40EFC0934DB}</Project>
+      <Name>GSP-Graphics</Name>
+    </ProjectReference>
     <ProjectReference Include="C:\Users\sebam\Documents\GSP\src\build\System\GSP-System.vcxproj">
       <Project>{15BA37E1-3765-3BB5-9C42-D48921397A84}</Project>
       <Name>GSP-System</Name>

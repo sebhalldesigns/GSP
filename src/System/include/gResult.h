@@ -19,6 +19,7 @@
 enum gResult {
     SUCCESS,
     WARNING,
+    ERR,
     FAILURE
 };
 

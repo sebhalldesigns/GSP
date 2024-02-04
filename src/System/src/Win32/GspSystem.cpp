@@ -25,6 +25,7 @@
 #include <windows.h>
 
 #include "GspSystem.h"
+#include "GspGraphics.h"
 
 #include <stdio.h>
 #include <vector>
@@ -53,7 +54,7 @@ static gApplicationQuitCallback quitCb;
 static gApplicationQuitRequestCallback quitRequestCb;
 
 static std::vector<gWindow> windows = { };
-static std::map<gWindow, gWindowInternalInfo> windowInfos = {};
+static std::map<gWindow, gWindowInternalInfo> windowInfoMap = {};
 
 static bool shouldQuitFlag = false;
 
@@ -73,6 +74,10 @@ gResult gApplicationRun(gApplicationInfo applicationInfo) {
     wc.lpszClassName = CLASS_NAME;
 
     RegisterClass(&wc);
+
+    if (GspGraphicsInit()) {
+        return gResult::FAILURE;
+    }
 
     if (launchedCb != nullptr) {
         std::vector<std::string> launchArgs;
@@ -184,7 +189,9 @@ gResult gCreateWindow(gWindow& window, std::string title, gSize size) {
         return gResult::WARNING;
     } 
 
-    windowInfos[window] = {};
+    GspGraphicsInitForWindow(window);
+
+    windowInfoMap[window] = {};
 
     return gResult::SUCCESS;
 }
@@ -212,6 +219,10 @@ gResult gCreateWindow(gWindow& window, std::string title, gSize size, gPoint pos
     if (window == nullptr) {
         return gResult::WARNING;
     } 
+
+    GspGraphicsInitForWindow(window);
+
+    windowInfoMap[window] = {};
 
     return gResult::SUCCESS;
 }
@@ -350,8 +361,8 @@ gResult gSetWindowVisibility(gWindow window, gWindowVisibility visibility) {
     }
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].visibilityAttr = visibility;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].visibilityAttr = visibility;
     }
 
     return gResult::SUCCESS;
@@ -360,8 +371,8 @@ gResult gSetWindowVisibility(gWindow window, gWindowVisibility visibility) {
 gResult gGetWindowVisibility(gWindow window, gWindowVisibility& visibility) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        visibility = windowInfos[window].visibilityAttr;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        visibility = windowInfoMap[window].visibilityAttr;
     } else {
         return gResult::WARNING;
     }
@@ -375,8 +386,8 @@ gResult gSetWindowStyle(gWindow window, gWindowStyle style) {
     // todo: change style here
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].styleAttr = style;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].styleAttr = style;
     }
 
 
@@ -386,8 +397,8 @@ gResult gSetWindowStyle(gWindow window, gWindowStyle style) {
 gResult gGetWindowStyle(gWindow window, gWindowStyle& style) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        style = windowInfos[window].styleAttr;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        style = windowInfoMap[window].styleAttr;
     } else {
         return gResult::WARNING;
     }
@@ -401,8 +412,8 @@ gResult gGetWindowStyle(gWindow window, gWindowStyle& style) {
 gResult gSetWindowResizeCallback(gWindow window, gWindowResizeCallback resizeCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].resizeCb = resizeCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].resizeCb = resizeCallback;
     } else {
         return gResult::WARNING;
     }
@@ -414,8 +425,8 @@ gResult gSetWindowResizeCallback(gWindow window, gWindowResizeCallback resizeCal
 gResult gSetWindowMoveCallback(gWindow window, gWindowMoveCallback moveCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].moveCb = moveCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].moveCb = moveCallback;
     } else {
         return gResult::WARNING;
     }
@@ -427,8 +438,8 @@ gResult gSetWindowMoveCallback(gWindow window, gWindowMoveCallback moveCallback)
 gResult gSetWindowVisbilityChangedCallback(gWindow window, gWindowVisbilityChangedCallback visibilityChangedCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].visbilityChangedCb = visibilityChangedCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].visbilityChangedCb = visibilityChangedCallback;
     } else {
         return gResult::WARNING;
     }
@@ -440,8 +451,8 @@ gResult gSetWindowVisbilityChangedCallback(gWindow window, gWindowVisbilityChang
 gResult gSetWindowFocusChangedCallback(gWindow window, gWindowFocusChangedCallback focusChangedCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].focusChangedCb = focusChangedCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].focusChangedCb = focusChangedCallback;
     } else {
         return gResult::WARNING;
     }
@@ -453,8 +464,8 @@ gResult gSetWindowFocusChangedCallback(gWindow window, gWindowFocusChangedCallba
 gResult gSetWindowDrawCallback(gWindow window, gWindowDrawCallback drawCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].drawCb = drawCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].drawCb = drawCallback;
     } else {
         return gResult::WARNING;
     }
@@ -466,8 +477,8 @@ gResult gSetWindowDrawCallback(gWindow window, gWindowDrawCallback drawCallback)
 gResult gSetWindowCloseCallback(gWindow window, gWindowCloseCallback closeCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].closeCb = closeCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].closeCb = closeCallback;
     } else {
         return gResult::WARNING;
     }
@@ -479,8 +490,8 @@ gResult gSetWindowCloseCallback(gWindow window, gWindowCloseCallback closeCallba
 gResult gSetWindowResizeRequestCallback(gWindow window, gWindowResizeRequestCallback resizeRequestCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].resizeRequestCb = resizeRequestCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].resizeRequestCb = resizeRequestCallback;
     } else {
         return gResult::WARNING;
     }
@@ -492,8 +503,8 @@ gResult gSetWindowResizeRequestCallback(gWindow window, gWindowResizeRequestCall
 gResult gSetWindowMoveRequestCallback(gWindow window, gWindowMoveRequestCallback moveRequestCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].moveRequestCb = moveRequestCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].moveRequestCb = moveRequestCallback;
     } else {
         return gResult::WARNING;
     }
@@ -505,8 +516,8 @@ gResult gSetWindowMoveRequestCallback(gWindow window, gWindowMoveRequestCallback
 gResult gSetWindowCloseRequestCallback(gWindow window, gWindowCloseRequestCallback closeRequestCallback) {
 
     // check windo is in info map
-    if (windowInfos.find(window) != windowInfos.end()) {
-        windowInfos[window].closeRequestCb = closeRequestCallback;
+    if (windowInfoMap.find(window) != windowInfoMap.end()) {
+        windowInfoMap[window].closeRequestCb = closeRequestCallback;
     } else {
         return gResult::WARNING;
     }
@@ -516,7 +527,7 @@ gResult gSetWindowCloseRequestCallback(gWindow window, gWindowCloseRequestCallba
 
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 
-    if (windowInfos.find((gWindow)hwnd) == windowInfos.end()) {
+    if (windowInfoMap.find((gWindow)hwnd) == windowInfoMap.end()) {
         return DefWindowProc(hwnd, msg, wParam, lParam);
     }
 
@@ -525,11 +536,13 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
     switch (msg) {
 
         case WM_DESTROY: {
-            if (windowInfos[window].closeCb != nullptr) {
-                windowInfos[window].closeCb(window);
+            if (windowInfoMap[window].closeCb != nullptr) {
+                windowInfoMap[window].closeCb(window);
             }
 
-            windowInfos.erase(window);
+            GspGraphicsCloseForWindow(window);
+
+            windowInfoMap.erase(window);
 
             for (int i = 0; i++; i < windows.size()) {
                 if (windows[i] == window) {
@@ -548,13 +561,13 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
             gSize newSize = {(float)LOWORD(lParam), (float)HIWORD(lParam)};
 
-            if (windowInfos[window].resizeRequestCb != nullptr) {
-                newSize = windowInfos[window].resizeRequestCb(window, newSize);
+            if (windowInfoMap[window].resizeRequestCb != nullptr) {
+                newSize = windowInfoMap[window].resizeRequestCb(window, newSize);
                 gSetWindowSize(window, newSize);
             }
 
-            if (windowInfos[window].resizeCb != nullptr) {
-                windowInfos[window].resizeCb(window, newSize);
+            if (windowInfoMap[window].resizeCb != nullptr) {
+                windowInfoMap[window].resizeCb(window, newSize);
                 gDrawWindow(window);
                 return 0;
             } else {
@@ -567,13 +580,13 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
             gPoint newPos = {(float)(short)LOWORD(lParam), (float)(short)HIWORD(lParam)};
 
-            if (windowInfos[window].moveRequestCb != nullptr) {
-                newPos = windowInfos[window].moveRequestCb(window, newPos);
+            if (windowInfoMap[window].moveRequestCb != nullptr) {
+                newPos = windowInfoMap[window].moveRequestCb(window, newPos);
                 gSetWindowPosition(window, newPos); 
             }
 
-            if (windowInfos[window].moveCb != nullptr) {
-                windowInfos[window].moveCb(window, newPos);
+            if (windowInfoMap[window].moveCb != nullptr) {
+                windowInfoMap[window].moveCb(window, newPos);
                 gDrawWindow(window);
                 return 0;
             } else {
@@ -586,16 +599,22 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 
         case WM_PAINT: {
 
-            if (windowInfos[window].drawCb != nullptr) {
-                windowInfos[window].drawCb(window);
-                 PAINTSTRUCT ps;
+            GspGraphicsStartRender(window);
+
+            if (windowInfoMap[window].drawCb != nullptr) {
+
+                windowInfoMap[window].drawCb(window);
+                /* PAINTSTRUCT ps;
                 HDC hdc = BeginPaint(hwnd, &ps);
 
                 FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
                 //SwapBuffers(hdc);
                 EndPaint(hwnd, &ps);
+                */
+                GspGraphicsCommitRender(window);
                 return 0;
             } else {
+                GspGraphicsCommitRender(window);
                 return DefWindowProc(hwnd, msg, wParam, lParam);
             }
         }

@@ -35,6 +35,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("C:/Users/sebam/Documents/GSP/src/build/System/cmake_install.cmake")
+  include("C:/Users/sebam/Documents/GSP/src/build/Graphics/cmake_install.cmake")
 
 endif()
 

@@ -18,6 +18,8 @@
 #include "gResult.h"
 #include "gSize.h"
 #include "gPoint.h"
+#include "gRect.h"
+#include "gColor.h"
 #include "gLog.h"
 #include "gApplication.h"
 #include "gWindow.h"
