@@ -1,0 +1,10 @@
+^C:\USERS\SEBAM\DOCUMENTS\GSP\SRC\BUILD\CMAKEFILES\F60337ADFC91B11465D38DFADD4B47D1\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/sebam/Documents/GSP/src -BC:/Users/sebam/Documents/GSP/src/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/sebam/Documents/GSP/src/build/GSP.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

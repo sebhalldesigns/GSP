@@ -590,6 +590,8 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
                 windowInfos[window].drawCb(window);
                  PAINTSTRUCT ps;
                 HDC hdc = BeginPaint(hwnd, &ps);
+
+                FillRect(hdc, &ps.rcPaint, (HBRUSH) (COLOR_WINDOW+1));
                 //SwapBuffers(hdc);
                 EndPaint(hwnd, &ps);
                 return 0;

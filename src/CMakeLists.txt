@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.7)
 
 project(GSP)
 
+
 find_package(Vulkan REQUIRED)
 
 add_definitions(-w)
@@ -11,6 +12,8 @@ set(CMAKE_CXX_STANDARD 17)
 if (WIN32)
 
     message("Building GSP for Win32...")
+
+    
     
     add_subdirectory(System)
 
