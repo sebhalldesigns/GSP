@@ -1,5 +1,6 @@
 #include "GspGraphics.h"
 #include "gOpenGL.h"
+#include "gVulkan.h"
 
 #include <cstdio>
 #include <Windows.h>
@@ -16,8 +17,16 @@ gResult GspGraphicsInit() {
     HMODULE vulkanModule = LoadLibrary("vulkan-1.dll");
 
     if (vulkanModule != NULL) {
-        printf("found\nUsing Vulkan for rendering.\n");
-        selectedApi = OPENGL;
+        printf("found\n");
+
+        if (gVulkanInit() == gResult::SUCCESS) {
+            printf("using Vulkan for rendering\n");
+            selectedApi = VULKAN;
+        } else {
+            printf("Vulkan init failed. Falling back to OpenGL for rendering\n");
+            selectedApi = OPENGL;
+        }
+        
     } else {
         printf("not found\nUsing legacy OpenGL for rendering.\n");
         selectedApi = OPENGL;

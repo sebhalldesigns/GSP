@@ -7,6 +7,9 @@
     <ClCompile Include="C:\Users\sebam\Documents\GSP\src\Graphics\src\Win32\gOpenGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="C:\Users\sebam\Documents\GSP\src\Graphics\src\Win32\gVulkan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="C:\Users\sebam\Documents\GSP\src\Graphics\CMakeLists.txt" />
