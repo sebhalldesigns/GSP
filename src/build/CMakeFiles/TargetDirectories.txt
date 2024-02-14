@@ -1,5 +1,4 @@
-C:/Users/sebam/Documents/GSP/src/build/CMakeFiles/GSP.dir
 C:/Users/sebam/Documents/GSP/src/build/CMakeFiles/ALL_BUILD.dir
 C:/Users/sebam/Documents/GSP/src/build/CMakeFiles/ZERO_CHECK.dir
-C:/Users/sebam/Documents/GSP/src/build/System/CMakeFiles/GSP-System.dir
-C:/Users/sebam/Documents/GSP/src/build/Graphics/CMakeFiles/GSP-Graphics.dir
+C:/Users/sebam/Documents/GSP/src/build/GSP-System/CMakeFiles/GSP-System.dir
+C:/Users/sebam/Documents/GSP/src/build/GSP-Graphics/CMakeFiles/GSP-Graphics.dir

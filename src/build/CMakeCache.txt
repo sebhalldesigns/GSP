@@ -197,6 +197,9 @@ GSP_BINARY_DIR:STATIC=C:/Users/sebam/Documents/GSP/src/build
 //Value Computed by CMake
 GSP_IS_TOP_LEVEL:STATIC=ON
 
+//Dependencies for the target
+GSP_LIB_DEPENDS:STATIC=general;GSP-System;general;GSP-Graphics;
+
 //Value Computed by CMake
 GSP_SOURCE_DIR:STATIC=C:/Users/sebam/Documents/GSP/src
 
