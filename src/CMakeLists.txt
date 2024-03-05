@@ -21,7 +21,13 @@ if (WIN32)
 
     #target_include_directories(GSP PRIVATE ./System/include ./Graphics/include)
 
-    
+elseif(LINUX)
+
+    message("Building GSP for Linux...")
+
+    add_executable(GSP ./Test/src/mainWayland.cpp)
+    target_link_libraries(GSP PRIVATE wayland-client X11)
+
 else()
     message(FATAL_ERROR "Unsupported platform ${PLATFORM}")
 endif()

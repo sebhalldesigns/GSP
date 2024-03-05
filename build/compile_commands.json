@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/seb/Documents/GSP/build",
+  "command": "/usr/bin/c++   -std=gnu++17   -w -o CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o -c /home/seb/Documents/GSP/src/Test/src/mainWayland.cpp",
+  "file": "/home/seb/Documents/GSP/src/Test/src/mainWayland.cpp",
+  "output": "CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o"
+}
+]
