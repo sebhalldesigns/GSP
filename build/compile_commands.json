@@ -1,8 +1,20 @@
 [
 {
   "directory": "/home/seb/Documents/GSP/build",
-  "command": "/usr/bin/c++   -std=gnu++17   -w -o CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o -c /home/seb/Documents/GSP/src/Test/src/mainWayland.cpp",
+  "command": "/usr/bin/g++   -g -std=gnu++17   -w -o CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o -c /home/seb/Documents/GSP/src/Test/src/mainWayland.cpp",
   "file": "/home/seb/Documents/GSP/src/Test/src/mainWayland.cpp",
   "output": "CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o"
+},
+{
+  "directory": "/home/seb/Documents/GSP/build",
+  "command": "/usr/bin/gcc   -g   -w -o CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.o -c /home/seb/Documents/GSP/src/Test/src/xdg-shell-protocol.c",
+  "file": "/home/seb/Documents/GSP/src/Test/src/xdg-shell-protocol.c",
+  "output": "CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.o"
+},
+{
+  "directory": "/home/seb/Documents/GSP/build",
+  "command": "/usr/bin/gcc   -g   -w -o CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.o -c /home/seb/Documents/GSP/src/Test/src/kde-server-decoration.c",
+  "file": "/home/seb/Documents/GSP/src/Test/src/kde-server-decoration.c",
+  "output": "CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.o"
 }
 ]

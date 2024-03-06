@@ -1,1 +1,1 @@
-/usr/bin/g++ CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o -o GSP  -lwayland-client -lX11 
+/usr/bin/g++ -g CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o "CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.o" "CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.o" -o GSP  -lwayland-client -lX11 

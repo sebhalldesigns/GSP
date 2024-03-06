@@ -129,6 +129,30 @@ GSP/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/build
 .PHONY : GSP/fast
 
+Test/src/kde-server-decoration.o: Test/src/kde-server-decoration.c.o
+.PHONY : Test/src/kde-server-decoration.o
+
+# target to build an object file
+Test/src/kde-server-decoration.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.o
+.PHONY : Test/src/kde-server-decoration.c.o
+
+Test/src/kde-server-decoration.i: Test/src/kde-server-decoration.c.i
+.PHONY : Test/src/kde-server-decoration.i
+
+# target to preprocess a source file
+Test/src/kde-server-decoration.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.i
+.PHONY : Test/src/kde-server-decoration.c.i
+
+Test/src/kde-server-decoration.s: Test/src/kde-server-decoration.c.s
+.PHONY : Test/src/kde-server-decoration.s
+
+# target to generate assembly for a file
+Test/src/kde-server-decoration.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.s
+.PHONY : Test/src/kde-server-decoration.c.s
+
 Test/src/mainWayland.o: Test/src/mainWayland.cpp.o
 .PHONY : Test/src/mainWayland.o
 
@@ -153,6 +177,30 @@ Test/src/mainWayland.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.s
 .PHONY : Test/src/mainWayland.cpp.s
 
+Test/src/xdg-shell-protocol.o: Test/src/xdg-shell-protocol.c.o
+.PHONY : Test/src/xdg-shell-protocol.o
+
+# target to build an object file
+Test/src/xdg-shell-protocol.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.o
+.PHONY : Test/src/xdg-shell-protocol.c.o
+
+Test/src/xdg-shell-protocol.i: Test/src/xdg-shell-protocol.c.i
+.PHONY : Test/src/xdg-shell-protocol.i
+
+# target to preprocess a source file
+Test/src/xdg-shell-protocol.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.i
+.PHONY : Test/src/xdg-shell-protocol.c.i
+
+Test/src/xdg-shell-protocol.s: Test/src/xdg-shell-protocol.c.s
+.PHONY : Test/src/xdg-shell-protocol.s
+
+# target to generate assembly for a file
+Test/src/xdg-shell-protocol.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.s
+.PHONY : Test/src/xdg-shell-protocol.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +210,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... GSP"
+	@echo "... Test/src/kde-server-decoration.o"
+	@echo "... Test/src/kde-server-decoration.i"
+	@echo "... Test/src/kde-server-decoration.s"
 	@echo "... Test/src/mainWayland.o"
 	@echo "... Test/src/mainWayland.i"
 	@echo "... Test/src/mainWayland.s"
+	@echo "... Test/src/xdg-shell-protocol.o"
+	@echo "... Test/src/xdg-shell-protocol.i"
+	@echo "... Test/src/xdg-shell-protocol.s"
 .PHONY : help
 
 

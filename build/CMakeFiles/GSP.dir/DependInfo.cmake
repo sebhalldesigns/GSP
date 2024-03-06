@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/seb/Documents/GSP/src/Test/src/kde-server-decoration.c" "CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.o" "gcc" "CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.o.d"
+  "/home/seb/Documents/GSP/src/Test/src/xdg-shell-protocol.c" "CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.o" "gcc" "CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.o.d"
   "/home/seb/Documents/GSP/src/Test/src/mainWayland.cpp" "CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o" "gcc" "CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o.d"
   )
 

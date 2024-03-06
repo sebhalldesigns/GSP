@@ -81,12 +81,12 @@ clean: CMakeFiles/GSP.dir/clean
 CMakeFiles/GSP.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/seb/Documents/GSP/build/CMakeFiles --progress-num=1,2 "Built target GSP"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/seb/Documents/GSP/build/CMakeFiles --progress-num=1,2,3,4 "Built target GSP"
 .PHONY : CMakeFiles/GSP.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/GSP.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/seb/Documents/GSP/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/seb/Documents/GSP/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/GSP.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/seb/Documents/GSP/build/CMakeFiles 0
 .PHONY : CMakeFiles/GSP.dir/rule
