@@ -24,9 +24,9 @@ if (WIN32)
 elseif(LINUX)
 
     message("Building GSP for Linux...")
-
-    add_executable(GSP ./Test/src/mainWayland.cpp ./Test/src/xdg-shell-protocol.c ./Test/src/kde-server-decoration.c)
-    target_link_libraries(GSP PRIVATE wayland-client X11)
+    add_executable(GSP ./GVG/main.cpp ./GVG/GVG.cpp)
+    #add_executable(GSP ./Test/src/mainWayland.cpp ./Test/src/xdg-shell-protocol.c ./Test/src/kde-server-decoration.c)
+    #target_link_libraries(GSP PRIVATE wayland-client X11)
 
 else()
     message(FATAL_ERROR "Unsupported platform ${PLATFORM}")

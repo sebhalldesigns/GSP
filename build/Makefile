@@ -129,77 +129,53 @@ GSP/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/build
 .PHONY : GSP/fast
 
-Test/src/kde-server-decoration.o: Test/src/kde-server-decoration.c.o
-.PHONY : Test/src/kde-server-decoration.o
+GVG/GVG.o: GVG/GVG.cpp.o
+.PHONY : GVG/GVG.o
 
 # target to build an object file
-Test/src/kde-server-decoration.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.o
-.PHONY : Test/src/kde-server-decoration.c.o
+GVG/GVG.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/GVG.cpp.o
+.PHONY : GVG/GVG.cpp.o
 
-Test/src/kde-server-decoration.i: Test/src/kde-server-decoration.c.i
-.PHONY : Test/src/kde-server-decoration.i
+GVG/GVG.i: GVG/GVG.cpp.i
+.PHONY : GVG/GVG.i
 
 # target to preprocess a source file
-Test/src/kde-server-decoration.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.i
-.PHONY : Test/src/kde-server-decoration.c.i
+GVG/GVG.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/GVG.cpp.i
+.PHONY : GVG/GVG.cpp.i
 
-Test/src/kde-server-decoration.s: Test/src/kde-server-decoration.c.s
-.PHONY : Test/src/kde-server-decoration.s
+GVG/GVG.s: GVG/GVG.cpp.s
+.PHONY : GVG/GVG.s
 
 # target to generate assembly for a file
-Test/src/kde-server-decoration.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/kde-server-decoration.c.s
-.PHONY : Test/src/kde-server-decoration.c.s
+GVG/GVG.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/GVG.cpp.s
+.PHONY : GVG/GVG.cpp.s
 
-Test/src/mainWayland.o: Test/src/mainWayland.cpp.o
-.PHONY : Test/src/mainWayland.o
+GVG/main.o: GVG/main.cpp.o
+.PHONY : GVG/main.o
 
 # target to build an object file
-Test/src/mainWayland.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.o
-.PHONY : Test/src/mainWayland.cpp.o
+GVG/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/main.cpp.o
+.PHONY : GVG/main.cpp.o
 
-Test/src/mainWayland.i: Test/src/mainWayland.cpp.i
-.PHONY : Test/src/mainWayland.i
-
-# target to preprocess a source file
-Test/src/mainWayland.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.i
-.PHONY : Test/src/mainWayland.cpp.i
-
-Test/src/mainWayland.s: Test/src/mainWayland.cpp.s
-.PHONY : Test/src/mainWayland.s
-
-# target to generate assembly for a file
-Test/src/mainWayland.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/mainWayland.cpp.s
-.PHONY : Test/src/mainWayland.cpp.s
-
-Test/src/xdg-shell-protocol.o: Test/src/xdg-shell-protocol.c.o
-.PHONY : Test/src/xdg-shell-protocol.o
-
-# target to build an object file
-Test/src/xdg-shell-protocol.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.o
-.PHONY : Test/src/xdg-shell-protocol.c.o
-
-Test/src/xdg-shell-protocol.i: Test/src/xdg-shell-protocol.c.i
-.PHONY : Test/src/xdg-shell-protocol.i
+GVG/main.i: GVG/main.cpp.i
+.PHONY : GVG/main.i
 
 # target to preprocess a source file
-Test/src/xdg-shell-protocol.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.i
-.PHONY : Test/src/xdg-shell-protocol.c.i
+GVG/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/main.cpp.i
+.PHONY : GVG/main.cpp.i
 
-Test/src/xdg-shell-protocol.s: Test/src/xdg-shell-protocol.c.s
-.PHONY : Test/src/xdg-shell-protocol.s
+GVG/main.s: GVG/main.cpp.s
+.PHONY : GVG/main.s
 
 # target to generate assembly for a file
-Test/src/xdg-shell-protocol.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/xdg-shell-protocol.c.s
-.PHONY : Test/src/xdg-shell-protocol.c.s
+GVG/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/main.cpp.s
+.PHONY : GVG/main.cpp.s
 
 # Help Target
 help:
@@ -210,15 +186,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... GSP"
-	@echo "... Test/src/kde-server-decoration.o"
-	@echo "... Test/src/kde-server-decoration.i"
-	@echo "... Test/src/kde-server-decoration.s"
-	@echo "... Test/src/mainWayland.o"
-	@echo "... Test/src/mainWayland.i"
-	@echo "... Test/src/mainWayland.s"
-	@echo "... Test/src/xdg-shell-protocol.o"
-	@echo "... Test/src/xdg-shell-protocol.i"
-	@echo "... Test/src/xdg-shell-protocol.s"
+	@echo "... GVG/GVG.o"
+	@echo "... GVG/GVG.i"
+	@echo "... GVG/GVG.s"
+	@echo "... GVG/main.o"
+	@echo "... GVG/main.i"
+	@echo "... GVG/main.s"
 .PHONY : help
 
 
