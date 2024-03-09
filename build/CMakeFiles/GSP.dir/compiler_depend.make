@@ -3,6 +3,7 @@
 
 CMakeFiles/GSP.dir/GVG/GVG.cpp.o: /home/seb/Documents/GSP/src/GVG/GVG.cpp \
   /home/seb/Documents/GSP/src/GVG/GVG.h \
+  /home/seb/Documents/GSP/src/GVG/Termsyn.h \
   /usr/include/alloca.h \
   /usr/include/c++/11/bits/std_abs.h \
   /usr/include/c++/11/cstdlib \
@@ -199,8 +200,6 @@ CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
 
-/usr/include/strings.h:
-
 /usr/include/math.h:
 
 /usr/include/c++/11/type_traits:
@@ -261,9 +260,11 @@ CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp \
 
 /home/seb/Documents/GSP/src/GVG/main.cpp:
 
-/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
-
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
+
+/usr/include/strings.h:
+
+/home/seb/Documents/GSP/src/GVG/Termsyn.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
@@ -303,6 +304,12 @@ CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp \
 
 /usr/include/c++/11/cstdlib:
 
+/usr/include/stdlib.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
 /home/seb/Documents/GSP/src/GVG/GVG.h:
 
 /usr/include/c++/11/pstl/pstl_config.h:
@@ -320,12 +327,6 @@ CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
 
 /usr/include/c++/11/stdlib.h:
-
-/usr/include/stdlib.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/wordsize.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
@@ -369,6 +370,8 @@ CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
 
+/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
 
 /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
@@ -395,6 +398,12 @@ CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp \
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
+/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/time_t.h:
+
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
@@ -410,9 +419,3 @@ CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp \
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/time_t.h:
-
-/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h:

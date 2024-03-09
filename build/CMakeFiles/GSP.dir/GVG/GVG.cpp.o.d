@@ -50,4 +50,5 @@ CMakeFiles/GSP.dir/GVG/GVG.cpp.o: /home/seb/Documents/GSP/src/GVG/GVG.cpp \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/wchar.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
- /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h
+ /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h \
+ /home/seb/Documents/GSP/src/GVG/Termsyn.h
