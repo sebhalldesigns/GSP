@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.7)
 project(GSP)
 
 add_definitions(-w)
-set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD 17)
 
 if (WIN32)
 
@@ -24,7 +24,9 @@ if (WIN32)
 elseif(LINUX)
 
     message("Building GSP for Linux...")
-    add_executable(GSP ./GVG/main.cpp ./GVG/GVG.cpp)
+    add_executable(GSP ./Test/src/main.c)
+    target_include_directories(GSP PUBLIC ./gvg/interface)
+    target_link_libraries(GSP PUBLIC ${CMAKE_SOURCE_DIR}/gvg/target/debug/libgvg.so)
     #add_executable(GSP ./Test/src/mainWayland.cpp ./Test/src/xdg-shell-protocol.c ./Test/src/kde-server-decoration.c)
     #target_link_libraries(GSP PRIVATE wayland-client X11)
 

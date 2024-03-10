@@ -8,8 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/seb/Documents/GSP/src/GVG/GVG.cpp" "CMakeFiles/GSP.dir/GVG/GVG.cpp.o" "gcc" "CMakeFiles/GSP.dir/GVG/GVG.cpp.o.d"
-  "/home/seb/Documents/GSP/src/GVG/main.cpp" "CMakeFiles/GSP.dir/GVG/main.cpp.o" "gcc" "CMakeFiles/GSP.dir/GVG/main.cpp.o.d"
+  "/home/seb/Documents/GSP/src/Test/src/main.c" "CMakeFiles/GSP.dir/Test/src/main.c.o" "gcc" "CMakeFiles/GSP.dir/Test/src/main.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

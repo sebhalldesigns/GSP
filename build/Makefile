@@ -129,53 +129,29 @@ GSP/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/build
 .PHONY : GSP/fast
 
-GVG/GVG.o: GVG/GVG.cpp.o
-.PHONY : GVG/GVG.o
+Test/src/main.o: Test/src/main.c.o
+.PHONY : Test/src/main.o
 
 # target to build an object file
-GVG/GVG.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/GVG.cpp.o
-.PHONY : GVG/GVG.cpp.o
+Test/src/main.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/main.c.o
+.PHONY : Test/src/main.c.o
 
-GVG/GVG.i: GVG/GVG.cpp.i
-.PHONY : GVG/GVG.i
-
-# target to preprocess a source file
-GVG/GVG.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/GVG.cpp.i
-.PHONY : GVG/GVG.cpp.i
-
-GVG/GVG.s: GVG/GVG.cpp.s
-.PHONY : GVG/GVG.s
-
-# target to generate assembly for a file
-GVG/GVG.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/GVG.cpp.s
-.PHONY : GVG/GVG.cpp.s
-
-GVG/main.o: GVG/main.cpp.o
-.PHONY : GVG/main.o
-
-# target to build an object file
-GVG/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/main.cpp.o
-.PHONY : GVG/main.cpp.o
-
-GVG/main.i: GVG/main.cpp.i
-.PHONY : GVG/main.i
+Test/src/main.i: Test/src/main.c.i
+.PHONY : Test/src/main.i
 
 # target to preprocess a source file
-GVG/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/main.cpp.i
-.PHONY : GVG/main.cpp.i
+Test/src/main.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/main.c.i
+.PHONY : Test/src/main.c.i
 
-GVG/main.s: GVG/main.cpp.s
-.PHONY : GVG/main.s
+Test/src/main.s: Test/src/main.c.s
+.PHONY : Test/src/main.s
 
 # target to generate assembly for a file
-GVG/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/GVG/main.cpp.s
-.PHONY : GVG/main.cpp.s
+Test/src/main.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GSP.dir/build.make CMakeFiles/GSP.dir/Test/src/main.c.s
+.PHONY : Test/src/main.c.s
 
 # Help Target
 help:
@@ -186,12 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... GSP"
-	@echo "... GVG/GVG.o"
-	@echo "... GVG/GVG.i"
-	@echo "... GVG/GVG.s"
-	@echo "... GVG/main.o"
-	@echo "... GVG/main.i"
-	@echo "... GVG/main.s"
+	@echo "... Test/src/main.o"
+	@echo "... Test/src/main.i"
+	@echo "... Test/src/main.s"
 .PHONY : help
 
 

@@ -1,14 +1,8 @@
 [
 {
   "directory": "/home/seb/Documents/GSP/build",
-  "command": "/usr/bin/g++   -g -std=gnu++17   -w -o CMakeFiles/GSP.dir/GVG/main.cpp.o -c /home/seb/Documents/GSP/src/GVG/main.cpp",
-  "file": "/home/seb/Documents/GSP/src/GVG/main.cpp",
-  "output": "CMakeFiles/GSP.dir/GVG/main.cpp.o"
-},
-{
-  "directory": "/home/seb/Documents/GSP/build",
-  "command": "/usr/bin/g++   -g -std=gnu++17   -w -o CMakeFiles/GSP.dir/GVG/GVG.cpp.o -c /home/seb/Documents/GSP/src/GVG/GVG.cpp",
-  "file": "/home/seb/Documents/GSP/src/GVG/GVG.cpp",
-  "output": "CMakeFiles/GSP.dir/GVG/GVG.cpp.o"
+  "command": "/usr/bin/gcc  -I/home/seb/Documents/GSP/src/./gvg/interface -g   -w -o CMakeFiles/GSP.dir/Test/src/main.c.o -c /home/seb/Documents/GSP/src/Test/src/main.c",
+  "file": "/home/seb/Documents/GSP/src/Test/src/main.c",
+  "output": "CMakeFiles/GSP.dir/Test/src/main.c.o"
 }
 ]

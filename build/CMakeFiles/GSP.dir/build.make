@@ -69,47 +69,32 @@ include CMakeFiles/GSP.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/GSP.dir/flags.make
 
-CMakeFiles/GSP.dir/GVG/main.cpp.o: CMakeFiles/GSP.dir/flags.make
-CMakeFiles/GSP.dir/GVG/main.cpp.o: /home/seb/Documents/GSP/src/GVG/main.cpp
-CMakeFiles/GSP.dir/GVG/main.cpp.o: CMakeFiles/GSP.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/seb/Documents/GSP/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/GSP.dir/GVG/main.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/GSP.dir/GVG/main.cpp.o -MF CMakeFiles/GSP.dir/GVG/main.cpp.o.d -o CMakeFiles/GSP.dir/GVG/main.cpp.o -c /home/seb/Documents/GSP/src/GVG/main.cpp
+CMakeFiles/GSP.dir/Test/src/main.c.o: CMakeFiles/GSP.dir/flags.make
+CMakeFiles/GSP.dir/Test/src/main.c.o: /home/seb/Documents/GSP/src/Test/src/main.c
+CMakeFiles/GSP.dir/Test/src/main.c.o: CMakeFiles/GSP.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/seb/Documents/GSP/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/GSP.dir/Test/src/main.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/GSP.dir/Test/src/main.c.o -MF CMakeFiles/GSP.dir/Test/src/main.c.o.d -o CMakeFiles/GSP.dir/Test/src/main.c.o -c /home/seb/Documents/GSP/src/Test/src/main.c
 
-CMakeFiles/GSP.dir/GVG/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/GSP.dir/GVG/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/seb/Documents/GSP/src/GVG/main.cpp > CMakeFiles/GSP.dir/GVG/main.cpp.i
+CMakeFiles/GSP.dir/Test/src/main.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/GSP.dir/Test/src/main.c.i"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/seb/Documents/GSP/src/Test/src/main.c > CMakeFiles/GSP.dir/Test/src/main.c.i
 
-CMakeFiles/GSP.dir/GVG/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/GSP.dir/GVG/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/seb/Documents/GSP/src/GVG/main.cpp -o CMakeFiles/GSP.dir/GVG/main.cpp.s
-
-CMakeFiles/GSP.dir/GVG/GVG.cpp.o: CMakeFiles/GSP.dir/flags.make
-CMakeFiles/GSP.dir/GVG/GVG.cpp.o: /home/seb/Documents/GSP/src/GVG/GVG.cpp
-CMakeFiles/GSP.dir/GVG/GVG.cpp.o: CMakeFiles/GSP.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/seb/Documents/GSP/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/GSP.dir/GVG/GVG.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/GSP.dir/GVG/GVG.cpp.o -MF CMakeFiles/GSP.dir/GVG/GVG.cpp.o.d -o CMakeFiles/GSP.dir/GVG/GVG.cpp.o -c /home/seb/Documents/GSP/src/GVG/GVG.cpp
-
-CMakeFiles/GSP.dir/GVG/GVG.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/GSP.dir/GVG/GVG.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/seb/Documents/GSP/src/GVG/GVG.cpp > CMakeFiles/GSP.dir/GVG/GVG.cpp.i
-
-CMakeFiles/GSP.dir/GVG/GVG.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/GSP.dir/GVG/GVG.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/seb/Documents/GSP/src/GVG/GVG.cpp -o CMakeFiles/GSP.dir/GVG/GVG.cpp.s
+CMakeFiles/GSP.dir/Test/src/main.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/GSP.dir/Test/src/main.c.s"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/seb/Documents/GSP/src/Test/src/main.c -o CMakeFiles/GSP.dir/Test/src/main.c.s
 
 # Object files for target GSP
 GSP_OBJECTS = \
-"CMakeFiles/GSP.dir/GVG/main.cpp.o" \
-"CMakeFiles/GSP.dir/GVG/GVG.cpp.o"
+"CMakeFiles/GSP.dir/Test/src/main.c.o"
 
 # External object files for target GSP
 GSP_EXTERNAL_OBJECTS =
 
-GSP: CMakeFiles/GSP.dir/GVG/main.cpp.o
-GSP: CMakeFiles/GSP.dir/GVG/GVG.cpp.o
+GSP: CMakeFiles/GSP.dir/Test/src/main.c.o
 GSP: CMakeFiles/GSP.dir/build.make
+GSP: /home/seb/Documents/GSP/src/gvg/target/debug/libgvg.so
 GSP: CMakeFiles/GSP.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/seb/Documents/GSP/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable GSP"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/seb/Documents/GSP/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable GSP"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GSP.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
