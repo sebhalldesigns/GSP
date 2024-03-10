@@ -1,4 +1,9 @@
 {
     "cmake.sourceDirectory": "/home/seb/Documents/GSP/src",
-    "editor.fontFamily": "'JetBrains Mono', 'monospace', monospace"
+    "editor.fontFamily": "'JetBrains Mono', 'monospace', monospace",
+    "files.associations": {
+        "gvg.h": "c",
+        "stdint.h": "c",
+        "stddef.h": "c"
+    }
 }

@@ -1,14 +1,10 @@
-use std::ffi::CString;
-use std::os::raw::c_char;
+use engine::*;
+use libc::c_void;
 
+pub mod basic_types;
 
-#[no_mangle]
-pub extern "C" fn send_msg() -> *mut c_char {
+pub mod engine;
 
-    let rust_string = "Hello from Rust!";
+pub mod interface;
 
-    let c_string = CString::new(rust_string).expect("Failed to create C string");
-
-    return c_string.into_raw();
-}
 
