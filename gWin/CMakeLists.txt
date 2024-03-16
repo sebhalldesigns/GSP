@@ -18,4 +18,19 @@ if (LINUX)
     # Link X11 library
     target_link_libraries(GWIN ${X11_LIBRARIES})
 
+elseif(WIN32)
+
+    message("Building gWin for Windows")
+        
+    set(GWIN_SRC
+        win32/gWin.c
+    )
+
+    add_library(GWIN STATIC ${GWIN_SRC})
+
+    target_include_directories(GWIN PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+    # Link X11 library
+    target_link_libraries(GWIN )
+
 endif()
