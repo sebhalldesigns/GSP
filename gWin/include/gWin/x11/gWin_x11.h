@@ -11,40 +11,10 @@
 #include <stddef.h> // for size_t
 
 /**
- * @typedef gWin Internal Close Request Callback (X11)
- * @brief set by system.
- * @param window The window this callback is referring to.
- * @return true if the window should be closed, false if it should stay open. Defaults to true.
- */
-typedef bool (*gwin_x11_window_close_request_callback_t)(gwin_handle_t window);
-
-/**
- * @typedef gWin Internal Window Closed Callback (X11)
- * @brief set by system.
- * @param window The window this callback is referring to.
- */
-typedef void (*gwin_x11_window_closed_callback_t)(gwin_handle_t window);
-
-/**
  * @brief Tries to initialize gWin for x11.
  * @return 1 if the initialization succeeds, 0 if it fails.
  */
 int gwin_x11_init();
-
-/**
- * @brief Sets the Internal Close Request Callback
- * Called by gWin system.
- * @param window_close_request_callback The close request callback function.
- */
-void gwin_x11_set_window_close_request_callback(gwin_x11_window_close_request_callback_t window_close_request_callback);
-
-/**
- * @brief Sets the Internal Closed Callback
- * Called by gWin system.
- * @param window_closed_callback The closed callback .
- */
-void gwin_x11_set_window_closed_callback(gwin_x11_window_closed_callback_t window_closed_callback);
-
 
 /**
  * @brief Finalizes gWin for x11.

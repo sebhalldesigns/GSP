@@ -5,8 +5,7 @@ if (LINUX)
     message(Building gWin for Linux)
     
     set(GWIN_SRC
-        gWin.c
-        x11/gWin_x11.c
+        x11/gWin.c
     )
 
     # Find X11 library
