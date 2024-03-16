@@ -1,1 +1,0 @@
-fn() -> Result<NonZeroUsize, std::io::Error> {available_parallelism}

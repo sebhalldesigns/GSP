@@ -1,1 +1,0 @@
-/usr/bin/gcc -g CMakeFiles/GSP.dir/Test/src/main.c.o -o GSP   -L/home/seb/Documents/GSP/src/gvg/target/debug  -Wl,-rpath,/home/seb/Documents/GSP/src/gvg/target/debug -lgvg 
