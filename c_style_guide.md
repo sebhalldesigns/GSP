@@ -17,3 +17,18 @@ Static globals to be prefixed with ``g_``.
 ``bool`` for flags.
 
 ``size_t`` for any situtation when imposing an arbitrary size limit isn't necessary.
+
+## Includes
+
+Each external include should have a justification for why it is needed.
+E.g
+``#include <stdio.h> // for printf()``
+
+## Warnings/Errors
+
+Info = something good/expected happened.
+
+Warning = programmer error (e.g bad handle passed to function etc)
+Error = system error (e.g buffer failed to allocate)
+
+Critical = system error bad enough that the program will/needs to quit

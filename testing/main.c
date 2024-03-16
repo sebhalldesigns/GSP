@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <gWin/gWin.h>
 
+#include <gVG/gVG.h>
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
+
 void launched() {
     printf("my app launched!\n");
 
@@ -15,7 +21,15 @@ void launched() {
 
 int main() {
 
-    gwin_set_launch_callback(launched);
+    struct gvg_buffer_t buffer = gvg_buffer_alloc(100, 100); 
+    struct gvg_color_t color = {
+        0.0f, 1.0f, 1.0f, 1.0f
+    };
+
+    gvg_buffer_fill(buffer, color);
+    stbi_write_png("image.png", buffer.width, buffer.height, 4, buffer.data, buffer.width * sizeof(uint32_t));
+
+    //gwin_set_launch_callback(launched);
 
     return gwin_run();
 }

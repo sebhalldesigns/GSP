@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 if (LINUX)
 
-    message(Building gWin for Linux)
+    message("Building gWin for Linux")
     
     set(GWIN_SRC
         x11/gWin.c
