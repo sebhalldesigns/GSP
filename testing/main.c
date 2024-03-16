@@ -24,23 +24,39 @@ void launched() {
 }
 
 void paint(gwin_handle_t window) {
-        
-    printf("PAINT\n");
 
+    
+
+    clock_t t; 
+    t = clock(); 
+        
     struct gvg_buffer_t buffer = gvg_buffer_alloc(window_width, window_height); 
+    t = clock() - t; 
+    printf("alloc took %llu us to execute \n", t); 
+
     struct gvg_color_t color = {
         0.0f, 1.0f, 1.0f, 1.0f
     };
 
+    t = clock(); 
     gvg_buffer_fill(buffer, color);
+    
+    t = clock() - t; 
+    printf("fill took %llu us to execute \n", t); 
+
+    
 
     gwin_paint_gvg(window, buffer);
 
     gvg_buffer_free(buffer);
+
+    
+
+    
 }
 
 void resize(gwin_handle_t window, struct gwin_window_size_t size) {
-    printf("RESIZE\n");
+    //printf("RESIZE\n");
     window_width = size.width;
     window_height = size.height;
 }

@@ -2,6 +2,31 @@
 
 #include <stdio.h> // for printf etc
 #include <stdlib.h> // for malloc etc
+#include <pthread.h>  // for threading
+
+#ifdef __linux__ 
+    #include <unistd.h>
+    long get_num_processors() {
+        long num = sysconf(_SC_NPROCESSORS_ONLN);
+        printf("found %lld processors\n", num);
+        return 4;
+    }
+#endif
+
+struct threaded_fill_args {
+    struct gvg_buffer_t buffer;
+    size_t start_index; 
+    size_t end_index; 
+    uint32_t pixel_color;
+};
+
+struct thread_state {
+    pthread_t thread;
+    struct threaded_fill_args* args;
+};
+
+static size_t g_num_processors = 0;
+static struct thread_state* g_threads = NULL;
 
 /**
  * @brief Tries to allocate a new pixel buffer, filled with white.
@@ -11,6 +36,11 @@
  * If the data section is NULL, the buffer failed to allocate.
  */
 struct gvg_buffer_t gvg_buffer_alloc(size_t width, size_t height) {
+
+    if (g_num_processors == 0) {
+        g_num_processors = get_num_processors();
+        g_threads = (pthread_t*)malloc(g_num_processors*sizeof(struct thread_state));
+    }
 
     struct gvg_buffer_t temp_buffer;
     temp_buffer.width = width;
@@ -45,6 +75,18 @@ void gvg_buffer_free(struct gvg_buffer_t buffer) {
     buffer.height = 0;
 }
 
+
+
+void* threaded_fill(struct threaded_fill_args* args) {
+    size_t i = args->start_index;
+    size_t limit = args->buffer.width * args->buffer.height;
+    while ( i < args->end_index && i < limit) {
+        args->buffer.data[i] = args->pixel_color;
+        i++;
+    }
+    printf("CALLED\n");
+    return NULL;
+}
 /**
  * @brief Fills a buffer.
  * @param buffer The buffer to fill.
@@ -57,15 +99,40 @@ void gvg_buffer_fill(struct gvg_buffer_t buffer, struct gvg_color_t color) {
         return;
     }
 
+
+
     uint32_t pixel_color = ((uint8_t)(color.alpha * 255) << 24) 
     | ((uint8_t)(color.blue * 255) << 16) 
     | ((uint8_t)(color.green * 255) << 8) 
     | (uint8_t)(color.red * 255);
 
-    for (size_t i = 0; i < buffer.width * buffer.height; i++) {
-        buffer.data[i] = pixel_color;
+    size_t pixels_per_processor = (buffer.width * buffer.height)/g_num_processors;
+
+   // printf("GVG_WARNING: ignoring buffer fill request because the buffer is invalid\n");
+
+
+    for (size_t i = 0; i < g_num_processors; i++) {
+
+        g_threads[i].args = malloc(sizeof(struct threaded_fill_args));
+        if (g_threads[i].args != NULL) {
+            g_threads[i].args->buffer = buffer;
+            g_threads[i].args->start_index = g_num_processors*i;
+            g_threads[i].args->end_index = pixels_per_processor*i + pixels_per_processor;
+            g_threads[i].args->pixel_color = pixel_color;
+            pthread_create(&(g_threads[i].thread), NULL, threaded_fill, (void*)g_threads[i].args);
+            //pthread_join(g_threads[i].thread, NULL);
+        }
     }
 
-    printf("FILLING %x\n", pixel_color);
+    for (size_t i = 0; i < g_num_processors; i++) { 
+        pthread_join(g_threads[i].thread, NULL);
+    }
+    
+
+    /*for (size_t i = 0; i < buffer.width * buffer.height; i++) {
+        buffer.data[i] = pixel_color;
+    }*/
+
+    //printf("FILLING %x\n", pixel_color);
 
 }

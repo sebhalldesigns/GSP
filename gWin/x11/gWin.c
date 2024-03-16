@@ -315,15 +315,24 @@ void gwin_x11_poll_events() {
             //if (g_window_paint_request_callback != NULL) {
             //    g_window_paint_request_callback((uintptr_t) g_event.xany.window);
             //}
+
+            if (g_window_paint_request_callback != NULL) {
+                g_window_paint_request_callback((uintptr_t) g_event.xany.window);
+            }
+
             break;
         case ConfigureNotify:
             // Handle window resize
             // Adjust window size variables accordingly
             // For simplicity, let's just print the new size
-            printf("Window resized: width=%d, height=%d\n", g_event.xconfigure.width, g_event.xconfigure.height);
-            if (g_window_paint_request_callback != NULL) {
-                g_window_paint_request_callback((uintptr_t) g_event.xany.window);
+            //printf("Window resized: width=%d, height=%d\n", g_event.xconfigure.width, g_event.xconfigure.height);
+            
+            if (g_window_resized_callback != NULL) {
+                struct gwin_window_size_t size = {g_event.xconfigure.width, g_event.xconfigure.height};
+                g_window_resized_callback((uintptr_t)g_event.xany.window, size);
             }
+            
+            
             break;
         case KeyPress:
             // Handle keyboard events
@@ -370,7 +379,7 @@ int gwin_x11_create_window(gwin_handle_t* handle) {
 
     XSetWMProtocols(g_x11_display, temp_window, &g_delete_message, 1);
 
-    XSelectInput(g_x11_display, temp_window, KeyPressMask | ButtonPressMask | StructureNotifyMask);
+    XSelectInput(g_x11_display, temp_window, ExposureMask | KeyPressMask | ButtonPressMask | StructureNotifyMask);
 
     XMapWindow(g_x11_display, temp_window);
 
