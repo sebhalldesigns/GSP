@@ -39,6 +39,14 @@ static Atom g_delete_message;
 // safely remove a window from the buffer if it exists
 void remove_window_from_buffer(gwin_handle_t window) {
 
+    if (g_num_windows == 1 && g_window_handles[0] == window) {
+        printf("GWIN_INFO: removing last window from buffer...\n");
+        free(g_window_handles);
+        g_window_handles = NULL;
+        g_num_windows = 0;
+        return;
+    }
+
     size_t num_removed = 0;
 
     size_t i = 0;
@@ -303,13 +311,19 @@ void gwin_x11_poll_events() {
         case Expose:
             // Handle window exposure (redraw window content)
             // For simplicity, let's just redraw a rectangle
-            XFillRectangle(g_x11_display, g_event.xany.window, DefaultGC(g_x11_display, 0), 20, 20, 100, 100);
+            //XFillRectangle(g_x11_display, g_event.xany.window, DefaultGC(g_x11_display, 0), 20, 20, 100, 100);
+            //if (g_window_paint_request_callback != NULL) {
+            //    g_window_paint_request_callback((uintptr_t) g_event.xany.window);
+            //}
             break;
         case ConfigureNotify:
             // Handle window resize
             // Adjust window size variables accordingly
             // For simplicity, let's just print the new size
             printf("Window resized: width=%d, height=%d\n", g_event.xconfigure.width, g_event.xconfigure.height);
+            if (g_window_paint_request_callback != NULL) {
+                g_window_paint_request_callback((uintptr_t) g_event.xany.window);
+            }
             break;
         case KeyPress:
             // Handle keyboard events
@@ -356,7 +370,7 @@ int gwin_x11_create_window(gwin_handle_t* handle) {
 
     XSetWMProtocols(g_x11_display, temp_window, &g_delete_message, 1);
 
-    XSelectInput(g_x11_display, temp_window, ExposureMask | KeyPressMask | ButtonPressMask | StructureNotifyMask);
+    XSelectInput(g_x11_display, temp_window, KeyPressMask | ButtonPressMask | StructureNotifyMask);
 
     XMapWindow(g_x11_display, temp_window);
 
@@ -384,4 +398,21 @@ int gwin_x11_destroy_window(gwin_handle_t handle) {
     }
 
     return 1;
+}
+
+/**
+ * @brief Paints a gVG buffer to a window.
+ * @param handle The gWin handle of the window.
+ * @param buffer The gVG buffer to paint.
+ * @return 1 if the window was destroyed successfully, otherwise 0.
+ */
+void gwin_paint_gvg(gwin_handle_t handle, struct gvg_buffer_t buffer) {
+
+    XImage* ximage = XCreateImage(g_x11_display, DefaultVisual(g_x11_display, 0), 24, ZPixmap, 0,
+                                   (char *)buffer.data, buffer.width, buffer.height, 32, 0);
+
+    XPutImage(g_x11_display, handle, DefaultGC(g_x11_display, 0), ximage, 0, 0, 0, 0, buffer.width, buffer.height);
+    XFlush(g_x11_display);
+
+    //XDestroyImage(ximage);
 }

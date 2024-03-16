@@ -13,7 +13,7 @@ if (LINUX)
 
     add_library(GWIN STATIC ${GWIN_SRC})
 
-    target_include_directories(GWIN PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+    target_include_directories(GWIN PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/../gVG/include)
 
     # Link X11 library
     target_link_libraries(GWIN ${X11_LIBRARIES})

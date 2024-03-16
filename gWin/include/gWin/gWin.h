@@ -8,6 +8,8 @@
 #ifndef GWIN_H
 #define GWIN_H
 
+#include <gVG/gVG.h>
+
 #include <stdbool.h> // for bool type
 #include <stdint.h> // for uintptr_t
 
@@ -160,6 +162,13 @@ int gwin_create_window(gwin_handle_t* handle);
  */
 int gwin_destroy_window(gwin_handle_t handle);
 
+/**
+ * @brief Paints a gVG buffer to a window.
+ * @param handle The gWin handle of the window.
+ * @param buffer The gVG buffer to paint.
+ * @return 1 if the window was destroyed successfully, otherwise 0.
+ */
+void gwin_paint_gvg(gwin_handle_t handle, struct gvg_buffer_t buffer);
 
 
 
