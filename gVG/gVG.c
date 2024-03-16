@@ -2,15 +2,30 @@
 
 #include <stdio.h> // for printf etc
 #include <stdlib.h> // for malloc etc
-#include <pthread.h>  // for threading
+
 
 #ifdef __linux__ 
     #include <unistd.h>
+    #include <pthread.h>  // for threading
+
     long get_num_processors() {
         long num = sysconf(_SC_NPROCESSORS_ONLN);
         printf("found %lld processors\n", num);
         return 4;
     }
+
+    #define gvg_thread_t pthread_t
+#endif
+
+#ifdef WIN32
+    #include <windows.h>
+
+    long get_num_processors() {
+        return 8;
+    }
+
+    #define gvg_thread_t HANDLE
+
 #endif
 
 struct threaded_fill_args {
@@ -21,7 +36,7 @@ struct threaded_fill_args {
 };
 
 struct thread_state {
-    pthread_t thread;
+    gvg_thread_t thread;
     struct threaded_fill_args* args;
 };
 
@@ -39,7 +54,7 @@ struct gvg_buffer_t gvg_buffer_alloc(size_t width, size_t height) {
 
     if (g_num_processors == 0) {
         g_num_processors = get_num_processors();
-        g_threads = (pthread_t*)malloc(g_num_processors*sizeof(struct thread_state));
+        g_threads = (gvg_thread_t*)malloc(g_num_processors*sizeof(struct thread_state));
     }
 
     struct gvg_buffer_t temp_buffer;
@@ -84,7 +99,7 @@ void* threaded_fill(struct threaded_fill_args* args) {
         args->buffer.data[i] = args->pixel_color;
         i++;
     }
-    printf("CALLED\n");
+  
     return NULL;
 }
 /**
@@ -119,13 +134,28 @@ void gvg_buffer_fill(struct gvg_buffer_t buffer, struct gvg_color_t color) {
             g_threads[i].args->start_index = g_num_processors*i;
             g_threads[i].args->end_index = pixels_per_processor*i + pixels_per_processor;
             g_threads[i].args->pixel_color = pixel_color;
-            pthread_create(&(g_threads[i].thread), NULL, threaded_fill, (void*)g_threads[i].args);
+            #ifdef __linux__
+                pthread_create(&(g_threads[i].thread), NULL, threaded_fill, (void*)g_threads[i].args);
+            #endif
+            #ifdef WIN32
+                g_threads[i].thread = CreateThread(NULL, 0,  (LPTHREAD_START_ROUTINE)threaded_fill, (LPVOID)g_threads[i].args, 0, NULL);
+            #endif
+            
             //pthread_join(g_threads[i].thread, NULL);
         }
     }
-
+    
     for (size_t i = 0; i < g_num_processors; i++) { 
+        #ifdef __linux__
         pthread_join(g_threads[i].thread, NULL);
+        #endif
+        #ifdef WIN32
+        if (g_threads[i].thread != NULL){
+           WaitForSingleObject(g_threads[i].thread,INFINITE);
+            
+            CloseHandle(g_threads[i].thread);
+        }
+        #endif
     }
     
 
