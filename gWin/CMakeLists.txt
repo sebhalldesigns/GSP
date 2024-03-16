@@ -6,6 +6,7 @@ if (LINUX)
     
     set(GWIN_SRC
         gWin.c
+        x11/gWin_x11.c
     )
 
     # Find X11 library
