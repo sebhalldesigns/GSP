@@ -39,6 +39,14 @@ static MSG g_msg;
 // safely remove a window from the buffer if it exists
 void remove_window_from_buffer(gwin_handle_t window) {
 
+    if (g_num_windows == 1 && g_window_handles[0] == window) {
+        printf("GWIN_INFO: removing last window from buffer...\n");
+        free(g_window_handles);
+        g_window_handles = NULL;
+        g_num_windows = 0;
+        return;
+    }
+
     size_t num_removed = 0;
 
     size_t i = 0;
@@ -256,6 +264,29 @@ int gwin_destroy_window(gwin_handle_t handle) {
     return 0;
 }
 
+/**
+ * @brief Paints a gVG buffer to a window.
+ * @param handle The gWin handle of the window.
+ * @param buffer The gVG buffer to paint.
+ * @return 1 if the window was destroyed successfully, otherwise 0.
+ */
+void gwin_paint_gvg(gwin_handle_t handle, struct gvg_buffer_t buffer) {
+
+    HDC hdc = GetDC(handle);
+
+    BITMAPINFO bmi = { 0 };
+    bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bmi.bmiHeader.biWidth = buffer.width;
+    bmi.bmiHeader.biHeight = -buffer.height; // negative height for top-down DIB
+    bmi.bmiHeader.biPlanes = 1;
+    bmi.bmiHeader.biBitCount = 32;
+    bmi.bmiHeader.biCompression = BI_RGB;
+    bmi.bmiHeader.biSizeImage = 0;
+
+    SetDIBitsToDevice(hdc, 0, 0, buffer.width, buffer.height, 0, 0, 0, buffer.height, buffer.data, &bmi, DIB_RGB_COLORS);
+
+    ReleaseDC(handle, hdc);
+}
 
 /**
  * @brief Tries to initialize gWin for win32.
@@ -325,6 +356,8 @@ int gwin_win32_create_window(gwin_handle_t* handle) {
     return *handle != NULL;
 }
 
+
+
 /**
  * @brief Destroys an Application Window.
  * If the window is successfully created, it will have an arbitrary size, title, location and title.
@@ -335,6 +368,8 @@ int gwin_win32_create_window(gwin_handle_t* handle) {
 int gwin_win32_destroy_window(gwin_handle_t handle) {
     return DestroyWindow(handle) > 0;
 }
+
+
 
 LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) { 
 
@@ -352,7 +387,32 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
             }
         }
 
+        case WM_PAINT: {
+            if (g_window_paint_request_callback != NULL) {
+                g_window_paint_request_callback((uintptr_t)hwnd);
+            }
+        }
+
+        case WM_DISPLAYCHANGE: {
+            InvalidateRect(hwnd, NULL, true);
+        }
+        
+
+        case WM_SIZE: {
+            UINT width = LOWORD(lParam);
+            UINT height = HIWORD(lParam);
+
+            struct gwin_window_size_t size = {width, height};
+
+            if (g_window_resized_callback != NULL) {
+                g_window_resized_callback((uintptr_t)hwnd, size);
+            }
+
+            InvalidateRect(hwnd, NULL, true);
+        }
+
     }
 
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
+
