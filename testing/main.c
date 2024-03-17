@@ -88,6 +88,8 @@ void resize(gwin_handle_t window, struct gwin_window_size_t size) {
 
 int main() {
 
+    gvg_init();
+
     //struct gvg_buffer_t buffer = gvg_buffer_alloc(100, 100); 
     /*struct gvg_color_t color = {
         0.0f, 1.0f, 1.0f, 1.0f

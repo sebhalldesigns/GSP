@@ -30,6 +30,11 @@ typedef struct gvg_color_t {
     float alpha;
 };
 
+/**
+ * @brief Initialises gVG
+ */
+void gvg_init();
+
 
 /**
  * @brief Tries to allocate a new pixel buffer, filled with a clear color.

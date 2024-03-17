@@ -1,4 +1,5 @@
 #include <gVG/gVG.h>
+#include <gVG/kernel/gVG_kernel.h>
 
 #include <stdio.h> // for printf etc
 #include <stdlib.h> // for malloc etc
@@ -42,6 +43,15 @@ struct thread_state {
 
 static size_t g_num_processors = 0;
 static struct thread_state* g_threads = NULL;
+
+
+/**
+ * @brief Initialises gVG
+ */
+void gvg_init() {
+    gvg_kernel_init();
+}
+
 
 /**
  * @brief Tries to allocate a new pixel buffer, filled with white.

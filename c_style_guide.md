@@ -1,5 +1,9 @@
 # GSP C Style Guide
 
+## Architectural
+
+Don't impose arbitrary size limits. Well written code should scale well on larger/more powerful hardware.
+
 ## Naming
 
 All types, variables and functions to be in ``snake_case``.
