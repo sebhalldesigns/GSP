@@ -41,6 +41,17 @@ typedef struct gvg_color_t {
 struct gvg_buffer_t gvg_buffer_alloc(size_t width, size_t height);
 
 /**
+ * @brief Tries to resize the given buffer.
+ * @param buffer The buffer to try and resize.
+ * @param width The desired width in pixels.
+ * @param height The desired height in pixels.
+ * @return The resized buffer with fields filled in. 
+ * If the data section is NULL, the buffer failed to allocate.
+ */
+struct gvg_buffer_t gvg_buffer_resize(struct gvg_buffer_t buffer, size_t width, size_t height);
+
+
+/**
  * @brief Frees a buffer.
  * @param buffer The buffer to free.
  */

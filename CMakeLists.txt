@@ -14,3 +14,4 @@ target_link_libraries(GSP PRIVATE GWIN GVG)
 
 target_include_directories(GSP PRIVATE ./gWin/include)
 
+#add_executable(GSP testing/vgv_test.c)

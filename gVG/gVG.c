@@ -57,9 +57,11 @@ struct gvg_buffer_t gvg_buffer_alloc(size_t width, size_t height) {
         g_threads = (gvg_thread_t*)malloc(g_num_processors*sizeof(struct thread_state));
     }
 
+    //printf("SIZE %llu\n", width*height*sizeof(uint32_t));
+
     struct gvg_buffer_t temp_buffer;
-    temp_buffer.width = width;
-    temp_buffer.height = height;
+    temp_buffer.width = 0;
+    temp_buffer.height = 0;
     temp_buffer.data = NULL;
 
     if (width > SIZE_MAX / height) {
@@ -75,6 +77,39 @@ struct gvg_buffer_t gvg_buffer_alloc(size_t width, size_t height) {
     } else {
         printf("GVG_ERROR: buffer allocation failed.\n");
         return temp_buffer;
+    }
+
+    return temp_buffer;
+}
+
+/**
+ * @brief Tries to resize the given buffer.
+ * @param buffer The buffer to try and resize.
+ * @param width The desired width in pixels.
+ * @param height The desired height in pixels.
+ * @return The resized buffer with fields filled in. 
+ * If the data section is NULL, the buffer failed to allocate.
+ */
+struct gvg_buffer_t gvg_buffer_resize(struct gvg_buffer_t buffer, size_t width, size_t height) {
+
+    struct gvg_buffer_t temp_buffer;
+    temp_buffer.width = 0;
+    temp_buffer.height = 0;
+    temp_buffer.data = NULL;
+
+    if (width > SIZE_MAX / height) {
+        printf("GVG_WARNING: ignoring buffer resize request because the size would be too big\n");
+        return buffer;
+    }
+
+    temp_buffer.data = (uint32_t*)realloc(buffer.data, width*height*sizeof(uint32_t));
+
+    if (temp_buffer.data != NULL) {
+        temp_buffer.width = width;
+        temp_buffer.height = height;
+    } else {
+        printf("GVG_ERROR: buffer reallocation failed.\n");
+        return buffer;
     }
 
     return temp_buffer;
