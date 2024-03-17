@@ -20,6 +20,7 @@ elseif(LINUX)
         posix/gVG_kernel.c
         posix/gVG_thread.c
         pipeline/gvg_bytegen.c
+        pipeline/gvg_combine.c
     )
 
 endif()
