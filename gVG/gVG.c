@@ -102,6 +102,13 @@ struct gvg_buffer_t gvg_buffer_resize(struct gvg_buffer_t buffer, size_t width, 
         return buffer;
     }
 
+    if (width * height == 0) {
+        printf("GVG_WARNING: ignoring buffer resize request because the size is zero\n");
+        return buffer;
+    }
+
+    printf("REALLOC REQUEST: %llu\n", width*height*sizeof(uint32_t));
+
     temp_buffer.data = (uint32_t*)realloc(buffer.data, width*height*sizeof(uint32_t));
 
     if (temp_buffer.data != NULL) {

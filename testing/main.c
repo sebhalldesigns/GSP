@@ -5,7 +5,7 @@
 
 #include <gVG/gVG.h>
 
-#include <Windows.h>
+//#include <Windows.h>
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
@@ -29,7 +29,7 @@ void launched() {
 
 void paint(gwin_handle_t window) {
 
-     LARGE_INTEGER frequency, start, end;
+    /* LARGE_INTEGER frequency, start, end;
     double elapsed;
 
     // Get the frequency of the performance counter
@@ -49,24 +49,25 @@ void paint(gwin_handle_t window) {
     // Convert elapsed time to microseconds
     elapsed *= 1000000;
 
-    printf("alloc took %.3f us to execute\n", elapsed);
+    printf("alloc took %.3f us to execute\n", elapsed);*/
 
-    /*clock_t t; 
+    clock_t t; 
     t = clock(); 
         
-    struct gvg_buffer_t buffer = gvg_buffer_alloc(window_width, window_height); 
+    //struct gvg_buffer_t buffer = gvg_buffer_alloc(window_width, window_height); 
+    buffer = gvg_buffer_resize(buffer, window_width, window_height);
     t = clock() - t; 
-    printf("alloc took %llu us to execute \n", t); */
+    printf("alloc took %llu us to execute \n", t); 
 
     struct gvg_color_t color = {
         0.0f, 1.0f, 1.0f, 1.0f
     };
 
-    //t = clock(); 
+    t = clock(); 
     gvg_buffer_fill(buffer, color);
     
-    //t = clock() - t; 
-    //printf("fill took %llu us to execute \n", t); 
+    t = clock() - t; 
+    printf("fill took %llu us to execute \n", t); 
 
     
 
@@ -87,16 +88,16 @@ void resize(gwin_handle_t window, struct gwin_window_size_t size) {
 
 int main() {
 
-    struct gvg_buffer_t buffer = gvg_buffer_alloc(100, 100); 
-    struct gvg_color_t color = {
+    //struct gvg_buffer_t buffer = gvg_buffer_alloc(100, 100); 
+    /*struct gvg_color_t color = {
         0.0f, 1.0f, 1.0f, 1.0f
-    };
+    };*/
 
     // Your code here
     buffer = gvg_buffer_alloc(100, 100); 
 
-    gvg_buffer_fill(buffer, color);
-    stbi_write_png("image.png", buffer.width, buffer.height, 4, buffer.data, buffer.width * sizeof(uint32_t));
+    //gvg_buffer_fill(buffer, color);
+    //stbi_write_png("image.png", buffer.width, buffer.height, 4, buffer.data, buffer.width * sizeof(uint32_t));
 
     gwin_set_launch_callback(launched);
     gwin_set_window_paint_request_callback(paint);
