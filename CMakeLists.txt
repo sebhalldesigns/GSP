@@ -16,4 +16,4 @@ add_subdirectory(gVG)
 
 add_executable(GSP testing/vgv_test.c)
 target_link_libraries(GSP PRIVATE GVG)
-target_include_directories(GSP PRIVATE ./gVg/include)
+target_include_directories(GSP PRIVATE ./gVG/include ./gVG/include/freetype2)

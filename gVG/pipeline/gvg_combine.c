@@ -1,10 +1,13 @@
 #include <gVG/pipeline/combine/gvg_combine.h>
+#include <gVG/pipeline/common/gvg_common.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
 // Function to blend two colors using alpha blending
+
+
 
 uint32_t blend_colors2(uint32_t src_color, uint32_t dst_color) {
 
@@ -19,6 +22,7 @@ uint32_t blend_colors2(uint32_t src_color, uint32_t dst_color) {
   uint8_t src_green = (src_color & 0x0000FF00) >> 8;
   uint8_t src_blue = (src_color & 0x000000FF);
 
+    uint8_t dst_alpha = (dst_color & 0xFF000000) >> 24;
   uint8_t dst_red = (dst_color & 0x00FF0000) >> 16;
   uint8_t dst_green = (dst_color & 0x0000FF00) >> 8;
   uint8_t dst_blue = (dst_color & 0x000000FF);
@@ -28,8 +32,11 @@ uint32_t blend_colors2(uint32_t src_color, uint32_t dst_color) {
   uint8_t blended_green = (src_green * src_alpha + dst_green * inv_src_alpha) / 255;
   uint8_t blended_blue = (src_blue * src_alpha + dst_blue * inv_src_alpha) / 255;
 
+
+    uint8_t blended_alpha = dst_alpha + src_alpha*(255-dst_alpha);
+
   // Pack the blended components back into a uint32_t color
-  return (src_alpha << 24) | (blended_red << 16) | (blended_green << 8) | blended_blue;
+  return (blended_alpha << 24) | (blended_red << 16) | (blended_green << 8) | blended_blue;
 }
 
 void gvg_combine_buffers(uint32_t* source, 
@@ -52,7 +59,7 @@ void gvg_combine_buffers(uint32_t* source,
             uint32_t dst_color = destination[(location.y + y) * destination_width + location.x + x];
 
             // Blend the colors and store the result in the destination buffer
-            destination[(location.y + y) * destination_width + location.x + x] = blend_colors2(src_color, dst_color);
+            destination[(location.y + y) * destination_width + location.x + x] = gvg_combine_colors(src_color, dst_color);
 
         }
     }
