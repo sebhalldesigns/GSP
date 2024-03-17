@@ -141,8 +141,8 @@ int main() {
         fprintf(stderr, "Error generating RGBA bitmap for glyph '%c'\n", glyph_char);
     }
 
-
-
+    gvg_bitmap_point_t point3 = { 400, 400 };
+    gvg_combine_buffers(bytes, 100, 100, destination_buffer.data, point3, 500, 500);    
 
     stbi_write_png("bytegen_render.png", 500, 500, 4, destination_buffer.data, 500 * sizeof(uint32_t));
 

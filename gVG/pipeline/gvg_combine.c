@@ -7,38 +7,6 @@
 
 // Function to blend two colors using alpha blending
 
-
-
-uint32_t blend_colors2(uint32_t src_color, uint32_t dst_color) {
-
-  // Get the alpha channel of the source color
-  uint8_t src_alpha = (src_color & 0xFF000000) >> 24;
-
-  // Invert the source alpha for smoother blending
-  uint8_t inv_src_alpha = 255 - src_alpha;
-
-  // Extract the red, green, and blue components from both colors
-  uint8_t src_red = (src_color & 0x00FF0000) >> 16;
-  uint8_t src_green = (src_color & 0x0000FF00) >> 8;
-  uint8_t src_blue = (src_color & 0x000000FF);
-
-    uint8_t dst_alpha = (dst_color & 0xFF000000) >> 24;
-  uint8_t dst_red = (dst_color & 0x00FF0000) >> 16;
-  uint8_t dst_green = (dst_color & 0x0000FF00) >> 8;
-  uint8_t dst_blue = (dst_color & 0x000000FF);
-
-  // Blend the red, green, and blue components using alpha blending
-  uint8_t blended_red = (src_red * src_alpha + dst_red * inv_src_alpha) / 255;
-  uint8_t blended_green = (src_green * src_alpha + dst_green * inv_src_alpha) / 255;
-  uint8_t blended_blue = (src_blue * src_alpha + dst_blue * inv_src_alpha) / 255;
-
-
-    uint8_t blended_alpha = dst_alpha + src_alpha*(255-dst_alpha);
-
-  // Pack the blended components back into a uint32_t color
-  return (blended_alpha << 24) | (blended_red << 16) | (blended_green << 8) | blended_blue;
-}
-
 void gvg_combine_buffers(uint32_t* source, 
     size_t source_width,
     size_t source_height, 

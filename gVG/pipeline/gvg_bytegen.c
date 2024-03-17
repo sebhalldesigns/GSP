@@ -1,4 +1,6 @@
 #include <gVG/pipeline/bytegen/gvg_bytegen.h>
+#include <gVG/pipeline/common/gvg_common.h>
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,12 +33,15 @@ uint32_t* gvg_path_gen_bytes(gvg_path_t* path, size_t width, size_t height) {;
     }
 
     for (size_t i = 0; i < width * height; i++) {
-        bytes[i] = 0xFFF0F00F;
+        bytes[i] = 0x00000000;
     }
 
 
     //draw_line(10.0, 10.0, 90.0, 90.0, bytes, width, height, 0xFFFFFFFF);
+    draw_line(10.0, 9.0, 900.0, 899.0, bytes, width, height, 0xFFFFFFFF);
     draw_line(10.0, 10.0, 900.0, 900.0, bytes, width, height, 0xFFFFFFFF);
+    draw_line(10.0, 11.0, 900.0, 901.0, bytes, width, height, 0xFFFFFFFF);
+
 
 
     return bytes;
@@ -68,42 +73,6 @@ uint32_t color_gen(float red, float green, float blue, float alpha) {
     return output;
 }
 
-// Function to blend colors using alpha blending
-uint32_t blend_colors(uint32_t old_color, uint32_t new_color) {
-    
-
-    // Extract the alpha channel from the new color
-    uint8_t alpha = (new_color >> 24) & 0xFF;
-
-    if (alpha == 0) {
-        // If alpha is zero, no blending occurs, return the original color
-        return old_color;
-    }
-
-    printf("COLOR WITH NEW ALPHA OF %u\n", alpha);
-
-
-    // Extract the RGB channels from both colors
-    uint8_t old_red = (old_color >> 16) & 0xFF;
-    uint8_t old_green = (old_color >> 8) & 0xFF;
-    uint8_t old_blue = old_color & 0xFF;
-    uint8_t new_red = (new_color >> 16) & 0xFF;
-    uint8_t new_green = (new_color >> 8) & 0xFF;
-    uint8_t new_blue = new_color & 0xFF;
-
-    // Calculate the blended color components
-    uint8_t blended_red = (new_red * alpha + old_red * (255 - alpha)) / 255;
-    uint8_t blended_green = (new_green * alpha + old_green * (255 - alpha)) / 255;
-    uint8_t blended_blue = (new_blue * alpha + old_blue * (255 - alpha)) / 255;
-
-
-    // Combine the blended color components into a single uint32_t value
-    uint32_t output =  (alpha << 24) | (blended_red << 16) | (blended_green << 8) | blended_blue;
-    printf("%x BLENDED WITH %x TO %x\n", old_color, new_color, output );
-
-    return output;
-}
-
 void draw_pixel(uint32_t* pixel_buffer, size_t x, size_t y, size_t width, size_t height, uint32_t color) {
     // TODO check it's not trying to access a bad address
     if (x > width || y > height) {
@@ -111,13 +80,13 @@ void draw_pixel(uint32_t* pixel_buffer, size_t x, size_t y, size_t width, size_t
     }
 
     uint32_t old_color = pixel_buffer[y * width + x];
-    pixel_buffer[y * width + x] = blend_colors(old_color, color);
+    pixel_buffer[y * width + x] = gvg_combine_colors(color, color);
     printf("%x BLENDED TO %x\n", old_color, pixel_buffer[y * width + x]);
 }
 void draw_line(float x0, float y0, float x1, float y1, uint32_t* pixel_buffer, size_t width, size_t height, uint32_t color) {
 
-    float blue = 1.0f;
-    float green = 1.0f;
+    float blue = 0.5f;
+    float green = 0.5f;
     float red = 1.0f;
     float alpha = 0.5f;
     
