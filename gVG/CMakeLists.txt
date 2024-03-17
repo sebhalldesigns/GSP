@@ -19,6 +19,7 @@ elseif(LINUX)
         gVG.c
         posix/gVG_kernel.c
         posix/gVG_thread.c
+        pipeline/gvg_bytegen.c
     )
 
 endif()
@@ -27,4 +28,4 @@ endif()
 add_library(GVG STATIC ${GVG_SRC})
 
 target_include_directories(GVG PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(GVG PUBLIC ${FREETYPE_LIB})
+target_link_libraries(GVG PUBLIC ${FREETYPE_LIB} m)

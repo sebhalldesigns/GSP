@@ -78,6 +78,11 @@ struct gvg_buffer_t gvg_buffer_alloc(size_t width, size_t height) {
         printf("GVG_WARNING: ignoring buffer allocation request because the size would be too big\n");
         return temp_buffer;
     }
+
+    if (width * height == 0) {
+        printf("GVG_WARNING: ignoring buffer resize request because the size is zero\n");
+        return temp_buffer;
+    }
     
     temp_buffer.data = (uint32_t*)malloc(width*height*sizeof(uint32_t));
 
