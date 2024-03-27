@@ -10,6 +10,9 @@ if (WIN32)
 
     set(GVG_SRC
         gVG.c
+        pipeline/gvg_common.c
+        pipeline/gvg_bytegen.c
+        pipeline/gvg_combine.c
     )
 
 elseif(LINUX)

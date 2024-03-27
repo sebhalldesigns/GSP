@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <time.h>
 
 #include <gVG/gVG.h>
 #include <gVG/pipeline/bytegen/gvg_bytegen.h>
