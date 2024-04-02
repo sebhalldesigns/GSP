@@ -5,7 +5,7 @@ project(GSP)
 set(CMAKE_C_STANDARD 99)
 
 #add_subdirectory(gWin)
-add_subdirectory(gVG)
+add_subdirectory(gSerKit)
 
 # Add executable target
 #add_executable(GSP testing/main.c)
@@ -14,6 +14,6 @@ add_subdirectory(gVG)
 
 #target_include_directories(GSP PRIVATE ./gWin/include)
 
-add_executable(GSP testing/vgv_test.c)
-target_link_libraries(GSP PRIVATE GVG)
-target_include_directories(GSP PRIVATE ./gVG/include ./gVG/include/freetype2)
+add_executable(GSP testing/gSkTest.c)
+target_link_libraries(GSP PRIVATE GSK)
+target_include_directories(GSP PRIVATE ./gSerKit/include ./gVG/include/freetype2)
