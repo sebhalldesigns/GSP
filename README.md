@@ -1,4 +1,9 @@
-# GSP - OpenGSP
+<p align="center">
+  <img src="docs/media/logo/gsp_logo.png" width="125" title="GSP Logo">
+</p>
+
+
+# OpenGSP
 
 A collection of modular libraries for modern application development.
 
