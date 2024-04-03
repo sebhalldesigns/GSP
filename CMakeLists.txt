@@ -4,16 +4,16 @@ project(GSP)
 # Set C standard to C99
 set(CMAKE_C_STANDARD 99)
 
-#add_subdirectory(gWin)
-add_subdirectory(gSerKit)
+add_subdirectory(gWin)
+#add_subdirectory(gSerKit)
 
 # Add executable target
-#add_executable(GSP testing/main.c)
+add_executable(GSP testing/WindowTest.c)
 
-#target_link_libraries(GSP PRIVATE GWIN GVG)
+target_link_libraries(GSP PRIVATE GWIN)
 
-#target_include_directories(GSP PRIVATE ./gWin/include)
+target_include_directories(GSP PRIVATE ./gWin/include)
 
-add_executable(GSP testing/gSkTest.c)
-target_link_libraries(GSP PRIVATE GSK)
-target_include_directories(GSP PRIVATE ./gSerKit/include ./gVG/include/freetype2)
+#add_executable(GSP testing/gSkTest.c)
+#target_link_libraries(GSP PRIVATE GSK)
+#target_include_directories(GSP PRIVATE ./gSerKit/include ./gVG/include/freetype2)
