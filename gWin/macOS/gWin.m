@@ -97,11 +97,18 @@ int gwin_run() {
         return 1;
     }
 
-    application = [NSApplication sharedApplication];
-    appDelegate = [[AppDelegate alloc] init];
-    windowDelegate = [[WindowDelegate alloc] init];
-    [application setDelegate:appDelegate];
-    [application run];
+    @autoreleasepool {
+        application = [NSApplication sharedApplication];
+        [application retain];
+        appDelegate = [[AppDelegate alloc] init];
+        [appDelegate retain];
+        windowDelegate = [[WindowDelegate alloc] init];
+        [windowDelegate retain];
+        [application setDelegate:appDelegate];
+        [application run];
+    }
+    
+    
 
     /*
     if (g_launch_callback != NULL) {
@@ -192,12 +199,22 @@ int gwin_create_window(gwin_handle_t* handle) {
 
     printf("Creating window...\n");
 
-	NSUInteger styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;    NSRect frame = NSMakeRect(0, 0, 600, 400);
-    NSWindow* window = [[NSWindow alloc] initWithContentRect:frame styleMask:styleMask backing:NSBackingStoreBuffered defer:NO];
-    [window setDelegate: windowDelegate];
-    const char* windowTitle = "GSP Window";
-	[window setTitle: [NSString stringWithUTF8String: windowTitle]];
-	[window makeKeyAndOrderFront: nil];
+    @autoreleasepool {
+
+
+        NSRect frame = NSMakeRect(0, 0, 600, 400);
+        NSUInteger styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;    
+        NSWindow* window = [[NSWindow alloc] initWithContentRect:frame styleMask:styleMask backing:NSBackingStoreBuffered defer:NO];
+        //[window setDelegate: windowDelegate];
+        const char* windowTitle = "GSP Window";
+    //	[window setTitle: [NSString stringWithUTF8String: windowTitle]];
+        
+        //window.visible = true;
+        window.isVisible = YES;
+        [window orderFront:nil];
+        [window retain];
+    }
+    //[NSApplication activateIgnoringOtherApps:true];
 
     return 1;
 }  
@@ -280,6 +297,10 @@ int gwin_macOS_destroy_window(gwin_handle_t handle) {
     printf("Application will terminate.\n");
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+    return g_quit_on_window_close;
+}
+
 @end
 
 @implementation WindowDelegate
@@ -287,13 +308,18 @@ int gwin_macOS_destroy_window(gwin_handle_t handle) {
 
 
 - (void)mtkView:(MTKView * )view drawableSizeWillChange:(CGSize)size {
-	
+	printf("this function is called\n");
 }
 
 - (void)drawInMTKView:(MTKView * )view {
-	
+	printf("this function 2 is called\n");
 	
 }
 
 @end
 
+@implementation WindowController
+
+
+
+@end
