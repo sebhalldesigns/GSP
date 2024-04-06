@@ -184,7 +184,7 @@ void gwin_set_window_paint_request_callback(gwin_window_close_request_callback_t
  * @param handle A gWin handle to write the new window to.
  * @return 1 if the window was created successfully, otherwise 0.
  */
-int gwin_create_window(gwin_handle_t* handle) {
+int gwin_create_window(gwin_handle_t* handle, gwin_window_creation_options_t options) {
 
     if (handle == NULL) {
         printf("GWIN_WARNING: invalid gwin_handle_t passed to gwin_create_window function\n");
@@ -366,7 +366,7 @@ void gwin_x11_poll_events() {
  * @param handle A gWin handle to write the new window to.
  * @return 1 if the window was created successfully, otherwise 0.
  */
-int gwin_x11_create_window(gwin_handle_t* handle) {
+int gwin_x11_create_window(gwin_handle_t* handle, gwin_window_creation_options_t options) {
     /*if (g_x11_display == NULL) {
 
     }*/

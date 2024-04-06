@@ -27,10 +27,22 @@ typedef uintptr_t gwin_handle_t;
  * @typedef Window Size type
  * @brief represents a width and height in coordinate space
  */
-typedef struct gwin_window_size_t {
+typedef struct {
     int width;
     int height;
-};
+} gwin_window_size_t;
+
+typedef enum {
+    SOFTWARE_BUFFER,
+    HARDWARE_BUFFER
+} gwin_window_buffer_type;
+
+typedef struct {
+    gwin_window_size_t size;
+    char* title;
+    bool start_hidden;
+    bool center_screen;
+} gwin_window_creation_options_t;
 
 /**
  * @typedef gWin Launch Callback type
@@ -45,7 +57,7 @@ typedef void (*gwin_launch_callback_t)();
  * @param window The window that was resized.
  * @param size The new window size.
  */
-typedef void (*gwin_window_resized_callback_t)(gwin_handle_t window, struct gwin_window_size_t size);
+typedef void (*gwin_window_resized_callback_t)(gwin_handle_t window, gwin_window_size_t size);
 
 /**
  * @typedef gWin Window Resize Request Callback type
@@ -55,7 +67,7 @@ typedef void (*gwin_window_resized_callback_t)(gwin_handle_t window, struct gwin
  * @param requested_size The requested size.
  * @return The adjusted size for the window. This can be the same or different to the requested size.
  */
-typedef struct gwin_window_size_t (*gwin_window_resize_request_callback_t)(gwin_handle_t window, struct gwin_window_size_t requested_size);
+typedef struct gwin_window_size_t (*gwin_window_resize_request_callback_t)(gwin_handle_t window, gwin_window_size_t requested_size);
 
 /**
  * @typedef gWin Window Closed Callback type
@@ -153,7 +165,7 @@ void gwin_set_window_paint_request_callback(gwin_window_close_request_callback_t
  * @param handle A gWin handle to write the new window to.
  * @return 1 if the window was created successfully, otherwise 0.
  */
-int gwin_create_window(gwin_handle_t* handle);
+int gwin_create_window(gwin_handle_t* handle, gwin_window_creation_options_t options);
 
 /**
  * @brief Destroys an Application Window
@@ -169,8 +181,6 @@ int gwin_destroy_window(gwin_handle_t handle);
  * @return 1 if the window was destroyed successfully, otherwise 0.
  */
 void gwin_paint_gvg(gwin_handle_t handle, struct gvg_buffer_t buffer);
-
-
 
 
 

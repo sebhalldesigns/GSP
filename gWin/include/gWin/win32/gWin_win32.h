@@ -34,7 +34,7 @@ void gwin_win32_poll_events();
  * @param handle A gWin handle to write the new window to.
  * @return 1 if the window was created successfully, otherwise 0.
  */
-int gwin_win32_create_window(gwin_handle_t* handle);
+int gwin_win32_create_window(gwin_handle_t* handle, gwin_window_creation_options_t options);
 
 /**
  * @brief Destroys an Application Window.

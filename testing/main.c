@@ -20,7 +20,12 @@ void launched() {
 
     gwin_handle_t window;
 
-    if (gwin_create_window(&window)) {
+    gwin_window_creation_options_t options;
+    options.center_screen = true;
+    options.size = { 1000, 750 };
+    options.title = "MAIN WINDOW";
+
+    if (gwin_create_window(&window, options)) {
         printf("window created!\n");
     } else {
         printf("window creation failed\n");

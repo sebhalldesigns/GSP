@@ -19,7 +19,8 @@ static gwin_window_close_request_callback_t g_window_close_request_callback = NU
 static gwin_window_paint_request_callback_t g_window_paint_request_callback = NULL;
 
 static bool g_quit_on_window_close = true;
-static bool g_should_quit_flag = false;
+// removed as uneccessary on macOS
+//static bool g_should_quit_flag = false;
 
 static size_t g_num_windows = 0;
 static gwin_handle_t* g_window_handles = NULL;
@@ -108,24 +109,6 @@ int gwin_run() {
         [application run];
     }
     
-    
-
-    /*
-    if (g_launch_callback != NULL) {
-        g_launch_callback();
-    }
-
-    while (!g_should_quit_flag) {
-        printf("POLLING...");
-        gwin_macOS_poll_events();
-
-        if (g_quit_on_window_close && g_num_windows == 0) {
-            printf("GWIN_INFO: quitting due quit_on_window_close being set to true and no windows being open\n");
-            g_should_quit_flag = true;
-        }
-    }*/
-
-
     return 0;
 }
 
@@ -195,26 +178,28 @@ void gwin_set_window_paint_request_callback(gwin_window_close_request_callback_t
  * @param handle A gWin handle to write the new window to.
  * @return 1 if the window was created successfully, otherwise 0.
  */
-int gwin_create_window(gwin_handle_t* handle) {
+int gwin_create_window(gwin_handle_t* handle, gwin_window_creation_options_t options) {
 
     printf("Creating window...\n");
 
     @autoreleasepool {
 
-
-        NSRect frame = NSMakeRect(0, 0, 600, 400);
+        NSRect frame = NSMakeRect(0, 0, options.size.width, options.size.height);
         NSUInteger styleMask = NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable;    
         NSWindow* window = [[NSWindow alloc] initWithContentRect:frame styleMask:styleMask backing:NSBackingStoreBuffered defer:NO];
-        //[window setDelegate: windowDelegate];
-        const char* windowTitle = "GSP Window";
-    //	[window setTitle: [NSString stringWithUTF8String: windowTitle]];
+        [window setDelegate: windowDelegate];
+        [window setTitle: [NSString stringWithUTF8String: options.title]];
+
+        if (options.center_screen) {
+            [window center];
+        }
+
+        if (!options.start_hidden) {
+            [window orderFront:nil];
+        }
         
-        //window.visible = true;
-        window.isVisible = YES;
-        [window orderFront:nil];
         [window retain];
     }
-    //[NSApplication activateIgnoringOtherApps:true];
 
     return 1;
 }  
@@ -268,7 +253,7 @@ void gwin_macOS_poll_events() {
  * @param handle A gWin handle to write the new window to.
  * @return 1 if the window was created successfully, otherwise 0.
  */
-int gwin_macOS_create_window(gwin_handle_t* handle) {
+int gwin_macOS_create_window(gwin_handle_t* handle, gwin_window_creation_options_t options) {
     return 1;
 }
 
@@ -287,7 +272,10 @@ int gwin_macOS_destroy_window(gwin_handle_t handle) {
 @implementation AppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+
     printf("Application did finish launching.\n");
+    [application activateIgnoringOtherApps:true];
+
     if (g_launch_callback != NULL) {
         g_launch_callback();
     }
@@ -305,15 +293,16 @@ int gwin_macOS_destroy_window(gwin_handle_t handle) {
 
 @implementation WindowDelegate
 
+- (NSSize)windowWillResize:(NSWindow *)sender toSize:(NSSize)frameSize {
 
+    gwin_window_size_t size = {frameSize.width, frameSize.height};
 
-- (void)mtkView:(MTKView * )view drawableSizeWillChange:(CGSize)size {
-	printf("this function is called\n");
-}
+    if (g_window_resized_callback != NULL) {
+        g_window_resized_callback((uintptr_t)sender, size);
+    }
 
-- (void)drawInMTKView:(MTKView * )view {
-	printf("this function 2 is called\n");
-	
+    return frameSize;
+
 }
 
 @end
