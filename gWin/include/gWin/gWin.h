@@ -111,6 +111,12 @@ void gwin_set_quit_on_window_close(bool quit_on_window_close);
  */
 int gwin_run();
 
+/**
+ * @brief Identifies if the platform is 'single window' i.e Mobile or Web
+ * @return true if the platform is single window, false if otherwise
+ */
+bool gwin_is_single_window_platform();
+
 // CALLBACK SETTINGS
 
 /**

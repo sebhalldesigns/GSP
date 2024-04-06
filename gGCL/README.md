@@ -1,6 +1,6 @@
-# gGCL - GSP Graphics & Compute Layer
+# gGPU - GSP GPU Abstraction Layer
 
-gGCL is an abstraction over platform and vendor specific Graphics APIs.
+gGPU is an abstraction over platform and vendor specific Graphics APIs.
 
 Available backends are as follows:
 
