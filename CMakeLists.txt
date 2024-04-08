@@ -24,6 +24,8 @@ set(CMAKE_CXX_STANDARD 11)
 #target_include_directories(GSP PRIVATE ./gSerKit/include ./gVG/include/freetype2)
 
 add_executable(GSP testing/emcc_test.c)
+target_link_libraries(GSP PRIVATE  ${CMAKE_CURRENT_SOURCE_DIR}/testing/libfreetype.a)
+target_include_directories(GSP PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/gVG/include/freetype2)
 
 # Set Emscripten specific options
 set(CMAKE_EXECUTABLE_SUFFIX ".js")
