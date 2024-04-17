@@ -1,0 +1,15 @@
+[package]
+name = "gsp_system"
+version = "0.1.1"
+edition = "2021"
+description = "OpenGSP System Package"
+readme = "README.md"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "gsp_system"
+path = "src/lib.rs"
+
+[dependencies]
