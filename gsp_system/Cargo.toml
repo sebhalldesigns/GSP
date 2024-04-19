@@ -16,5 +16,10 @@ path = "src/bin.rs"
 name = "gsp_system"
 path = "src/lib.rs"
 
+
 [dependencies]
-cocoa = "0.25.0"
+libc = "0.2.153"
+objc = "0.2.7"
+objc2 = "0.5.1"
+objc2-app-kit = "0.2.0"
+objc2-foundation = "0.2.0"
