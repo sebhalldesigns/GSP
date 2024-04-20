@@ -41,15 +41,3 @@ impl Default for GspInternalWindowState {
         }
     }
 }
-
-pub struct GspInternalSystemState {
-    pub window_handles: HashMap<GspWindowHandle, GspInternalWindowState>
-
-}
-
-lazy_static::lazy_static! {
-    pub static ref SYSTEM_STATE: Mutex<Cell<GspInternalSystemState>> = Mutex::new(Cell::new(GspInternalSystemState {
-        window_handles: HashMap::new()
-    }));
-}
-

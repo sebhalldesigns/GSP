@@ -1,6 +1,6 @@
 [package]
 name = "gsp_system"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "OpenGSP System Package"
 readme = "README.md"
@@ -11,7 +11,7 @@ license = "MIT"
 
 [lib]
 name = "gsp_system"
-crate-type = ["staticlib", "cdylib"]
+# crate-type = ["staticlib", "cdylib"]
 path = "src/lib.rs"
 
 [target.'cfg(target_os = "macos")'.dependencies]
@@ -27,5 +27,4 @@ windows-sys = { version = "0.52.0", features = [
     ] }
 
 [dependencies]
-lazy_static = "1.4"
 

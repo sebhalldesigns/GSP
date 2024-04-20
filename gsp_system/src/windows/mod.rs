@@ -44,11 +44,6 @@ pub extern "C" fn gsp_run(app_info: GspAppInfo) -> i32 {
     println!("Starting application '{}'", app_name);
     println!("v{}.{}.{}, developed by '{}'", app_info.version.major, app_info.version.minor, app_info.version.build, app_developer);
 
-    let mut state = crate::internal::SYSTEM_STATE.lock().unwrap();
-    let system_state = state.get_mut();
-    drop(system_state);
-    drop(state);
-
     // Register the window class
 
     unsafe {
@@ -170,10 +165,6 @@ pub extern "C" fn gsp_create_window(creation_info: GspWindowInfo) -> GspWindowHa
             println!("window was 0");
             return 0;
         }
-
-        let mut state = crate::internal::SYSTEM_STATE.lock().unwrap();
-        let system_state = state.get_mut();
-        system_state.window_handles.insert(window_id, GspInternalWindowState::default());
 
         return window_id;  
     }
