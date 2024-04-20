@@ -11,7 +11,7 @@ license = "MIT"
 
 [lib]
 name = "gsp_system"
-crate-type = ["staticlib"] # or "dylib" for a dynamic library
+crate-type = ["staticlib", "cdylib"]
 path = "src/lib.rs"
 
 
