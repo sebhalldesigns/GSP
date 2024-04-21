@@ -28,9 +28,12 @@ pub struct GspVersion {
     major: u32,
     minor: u32,
     build: u32,
+<<<<<<< HEAD
     pub major: u32,
     pub minor: u32,
     pub build: u32
+=======
+>>>>>>> c45711ba5b31de0951a9cd950b43392694d06189
 }
 
 pub type GspAppLaunchCallback = extern "C" fn();
@@ -56,7 +59,10 @@ pub type GspWindowWillResizeCallback =
     extern "C" fn(window: GspWindowHandle, requested_size: GspWindowSize) -> GspWindowSize;
 pub type GspWindowClosedCallback = extern "C" fn(window: GspWindowHandle);
 pub type GspWindowWillCloseCallback = extern "C" fn(window: GspWindowHandle) -> bool;
+<<<<<<< HEAD
 
+=======
+>>>>>>> c45711ba5b31de0951a9cd950b43392694d06189
 
 #[repr(C)]
 pub struct GspWindowInfo {
