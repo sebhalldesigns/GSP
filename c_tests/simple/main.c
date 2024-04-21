@@ -22,8 +22,8 @@ void window_closed(GspWindowHandle window) {
 GspWindowSize window_will_resize(GspWindowHandle window, GspWindowSize size) {
     printf("WINDOW WILL RESIZE FROM C\n");
     int snap_size = 50;
-   // size.width = (size.width + snap_size) / snap_size * snap_size;
-  //  size.height = (size.height + snap_size) / snap_size * snap_size;
+size.width = (size.width + snap_size) / snap_size * snap_size;
+  size.height = (size.height + snap_size) / snap_size * snap_size;
     return size;
 }
 
@@ -47,8 +47,8 @@ void run_callback() {
 
     gsp_set_window_resized_callback(window, window_resized);
     gsp_set_window_will_resize_callback(window, window_will_resize);
-    gsp_set_window_closed_callback(window, window_closed);
-    gsp_set_window_will_close_callback(window, window_will_close);
+   gsp_set_window_closed_callback(window, window_closed);
+     gsp_set_window_will_close_callback(window, window_will_close);
 }
 
 int main() {

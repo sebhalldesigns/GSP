@@ -62,41 +62,6 @@ pub extern "C" fn gsp_run(app_info: GspAppInfo) -> i32 {
         };
     
         RegisterClassA(&wnd_class);
-
-        let creation_info = GspWindowInfo {
-            title: "My Window".as_ptr() as _,
-            width: 100,
-            height: 100,
-            x: 0,
-            y: 0,
-            hidden: false
-        };
-
-        let hwnd = CreateWindowExA(
-            0,
-            s!("WindowClass"),
-            creation_info.title as _,
-            WS_OVERLAPPEDWINDOW,
-            CW_USEDEFAULT,
-            CW_USEDEFAULT,
-            creation_info.width,
-            creation_info.height,
-            creation_info.x as isize,
-            creation_info.y as isize,
-            GetModuleHandleA(0 as *const u8),
-            std::ptr::null_mut(),
-        );
-        println!("Created window");
-        println!("Created window with id {}", hwnd.clone());
-        
-        let window_id: usize = hwnd as usize; 
-
-        println!("got to here");
-
-        UpdateWindow(window_id as HWND);
-        // Show and run the window
-        ShowWindow(window_id as HWND,  SW_SHOWDEFAULT);
-        //
     }
 
 
