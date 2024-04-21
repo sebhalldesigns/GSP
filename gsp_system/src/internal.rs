@@ -5,6 +5,7 @@ use std::{cell::Cell, sync::Mutex};
 use crate::*;
 
 pub struct GspInternalWindowState {
+    pub window_handle: usize,
     pub resized_callback: GspWindowResizedCallback,
     pub will_resize_callback: GspWindowWillResizeCallback,
     pub closed_callback: GspWindowClosedCallback,
@@ -36,6 +37,7 @@ extern "C" fn default_will_close_callback(window: GspWindowHandle) -> bool {
 impl Default for GspInternalWindowState {
     fn default() -> Self {
         GspInternalWindowState {
+            window_handle: 0,
             resized_callback: default_resized_callback,
             will_resize_callback: default_will_resize_callback,
             closed_callback: default_closed_callback,

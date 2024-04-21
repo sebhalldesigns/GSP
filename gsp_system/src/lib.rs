@@ -5,7 +5,6 @@
 // to provide a high-performance, intuitive and flexible framework
 // for cross-platform application development.
 
-
 // Platform-Specific Code:
 
 #[cfg(target_os = "macos")]
@@ -28,7 +27,7 @@ use std::os::raw::c_char;
 pub struct GspVersion {
     major: u32,
     minor: u32,
-    build: u32
+    build: u32,
 }
 
 pub type GspAppLaunchCallback = extern "C" fn();
@@ -38,20 +37,22 @@ pub struct GspAppInfo {
     pub name: *const c_char,
     pub developer: *const c_char,
     pub version: GspVersion,
-    pub launch_callback: GspAppLaunchCallback
+    pub launch_callback: GspAppLaunchCallback,
 }
 
+#[derive(Clone, Copy)]
 #[repr(C)]
 pub struct GspWindowSize {
     pub width: i32,
-    pub height: i32
+    pub height: i32,
 }
 
 pub type GspWindowHandle = usize;
-pub type GspWindowResizedCallback = extern "C" fn (window: GspWindowHandle, new_size: GspWindowSize);
-pub type GspWindowWillResizeCallback = extern "C" fn (window: GspWindowHandle, requested_size: GspWindowSize) -> GspWindowSize;
-pub type GspWindowClosedCallback = extern "C" fn (window: GspWindowHandle);
-pub type GspWindowWillCloseCallback = extern "C" fn (window: GspWindowHandle) -> bool;
+pub type GspWindowResizedCallback = extern "C" fn(window: GspWindowHandle, new_size: GspWindowSize);
+pub type GspWindowWillResizeCallback =
+    extern "C" fn(window: GspWindowHandle, requested_size: GspWindowSize) -> GspWindowSize;
+pub type GspWindowClosedCallback = extern "C" fn(window: GspWindowHandle);
+pub type GspWindowWillCloseCallback = extern "C" fn(window: GspWindowHandle) -> bool;
 
 #[repr(C)]
 pub struct GspWindowInfo {
@@ -60,9 +61,5 @@ pub struct GspWindowInfo {
     pub height: i32,
     pub x: i32,
     pub y: i32,
-    pub hidden: bool
+    pub hidden: bool,
 }
-
-
-
-

@@ -1,0 +1,15 @@
+/Users/seb/GSP/simple_test/bin/Debug/net8.0/simple_test
+/Users/seb/GSP/simple_test/bin/Debug/net8.0/simple_test.deps.json
+/Users/seb/GSP/simple_test/bin/Debug/net8.0/simple_test.runtimeconfig.json
+/Users/seb/GSP/simple_test/bin/Debug/net8.0/simple_test.dll
+/Users/seb/GSP/simple_test/bin/Debug/net8.0/simple_test.pdb
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.GeneratedMSBuildEditorConfig.editorconfig
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.AssemblyInfoInputs.cache
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.AssemblyInfo.cs
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.csproj.CoreCompileInputs.cache
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.sourcelink.json
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.dll
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/refint/simple_test.dll
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.pdb
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/simple_test.genruntimeconfig.cache
+/Users/seb/GSP/simple_test/obj/Debug/net8.0/ref/simple_test.dll
