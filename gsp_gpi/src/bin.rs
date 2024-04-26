@@ -12,6 +12,7 @@ lazy_static! {
     static ref QUEUE: Mutex<Cell<usize>> = Mutex::new(Cell::new(0));
     static ref DEVICE: Mutex<Cell<usize>> = Mutex::new(Cell::new(0));
     static ref CONFIG: Mutex<Cell<usize>> = Mutex::new(Cell::new(0));
+    static ref PIPELINE: Mutex<Cell<usize>> = Mutex::new(Cell::new(0));
 }
 
 
@@ -102,13 +103,62 @@ extern "C" fn launch_callback() {
     let config = wgpu::SurfaceConfiguration {
         usage: wgpu::TextureUsages::RENDER_ATTACHMENT,
         format: surface_format,
-        width: 2560,
-        height: 1440,
+        width: 800,
+        height: 600,
         present_mode: surface_caps.present_modes[0],
         alpha_mode: surface_caps.alpha_modes[0],
         view_formats: vec![],
         desired_maximum_frame_latency: 2
     };
+
+    let shader = device.create_shader_module(wgpu::include_wgsl!("shader.wgsl"));
+    let render_pipeline_layout =
+    device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
+        label: Some("Render Pipeline Layout"),
+        bind_group_layouts: &[],
+        push_constant_ranges: &[],
+    });
+
+ 
+    let render_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+        label: Some("Render Pipeline"),
+        layout: Some(&render_pipeline_layout),
+        vertex: wgpu::VertexState {
+            module: &shader,
+            entry_point: "vs_main", // 1.
+            buffers: &[], // 2.
+        },
+        fragment: Some(wgpu::FragmentState { // 3.
+            module: &shader,
+            entry_point: "fs_main",
+            targets: &[Some(wgpu::ColorTargetState { // 4.
+                format: config.format,
+                blend: Some(wgpu::BlendState::REPLACE),
+                write_mask: wgpu::ColorWrites::ALL,
+            })],
+        }),
+        primitive: wgpu::PrimitiveState {
+            topology: wgpu::PrimitiveTopology::TriangleList, // 1.
+            strip_index_format: None,
+            front_face: wgpu::FrontFace::Ccw, // 2.
+            cull_mode: Some(wgpu::Face::Back),
+            // Setting this to anything other than Fill requires Features::NON_FILL_POLYGON_MODE
+            polygon_mode: wgpu::PolygonMode::Fill,
+            // Requires Features::DEPTH_CLIP_CONTROL
+            unclipped_depth: false,
+            // Requires Features::CONSERVATIVE_RASTERIZATION
+            conservative: false,
+        },
+        depth_stencil: None, // 1.
+        multisample: wgpu::MultisampleState {
+            count: 1, // 2.
+            mask: !0, // 3.
+            alpha_to_coverage_enabled: false, // 4.
+        },
+        multiview: None, // 5.
+    });
+    
+    
 
     surface.configure(&device, &config);
 
@@ -126,6 +176,9 @@ extern "C" fn launch_callback() {
 
     let config_raw = Box::into_raw(Box::new(config)) as usize;
     CONFIG.lock().unwrap().set(config_raw);
+
+    let pipeline_raw = Box::into_raw(Box::new(render_pipeline)) as usize;
+    PIPELINE.lock().unwrap().set(pipeline_raw);
 
 }
 
@@ -157,6 +210,10 @@ extern "C" fn window_resized(window: GspWindowHandle, size: GspWindowSize) {
         let mut config = &mut *config_raw;
 
 
+        let pipeline_raw = PIPELINE.lock().unwrap().get() as *mut wgpu::RenderPipeline;
+        let mut pipeline = &mut *pipeline_raw;
+
+
         //config.width = 2560;//size.width as u32;
         //config.height = 1440;//size.height as u32;
 
@@ -174,7 +231,7 @@ extern "C" fn window_resized(window: GspWindowHandle, size: GspWindowSize) {
         });
     
         {
-            let _render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
+            let mut render_pass = encoder.begin_render_pass(&wgpu::RenderPassDescriptor {
                 label: Some("Render Pass"),
                 color_attachments: &[Some(wgpu::RenderPassColorAttachment {
                     view: &view,
@@ -193,6 +250,9 @@ extern "C" fn window_resized(window: GspWindowHandle, size: GspWindowSize) {
                 occlusion_query_set: None,
                 timestamp_writes: None,
             });
+
+            render_pass.set_pipeline(pipeline); // 2.
+            render_pass.draw(0..3, 0..1); // 3.
         }
         
  

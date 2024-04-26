@@ -11,7 +11,7 @@ license = "MIT"
 
 [lib]
 name = "gsp_system"
-crate-type = ["staticlib", "cdylib"]
+#crate-type = ["staticlib", "cdylib"]
 path = "src/lib.rs"
 
 [target.'cfg(target_os = "macos")'.dependencies]
