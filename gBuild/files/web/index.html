@@ -1,0 +1,28 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>OpenGSP Web Application</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+        div.emscripten { text-align: center; }
+        div.emscripten_border { border: 1px solid black; }
+        /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+        canvas.emscripten { border: 0px none; background-color: black; }
+    </style>
+  </head>
+
+  <body>
+    <h1>OpenGSP Web Application</h1>
+
+    <div class="emscripten" id="status">Downloading...</div>
+    <textarea id="output" rows="8"></textarea>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex=-1></canvas>
+
+    <script async type="text/javascript" src="GSP.js"></script>
+  </body>
+</html>
