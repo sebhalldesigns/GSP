@@ -1,8 +1,14 @@
-# GSP C Style Guide
+# OpenGSP Code Style Guide
+
+## Interfaces
+
+External interfaces to libraries should be 'C style' and so make use of simple 
 
 ## Architectural
 
 Don't impose arbitrary size limits. Well written code should scale well on larger/more powerful hardware.
+
+
 
 ## Naming
 
