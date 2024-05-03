@@ -1,6 +1,8 @@
 #ifndef GWINDOW_H
 #define GWINDOW_H
 
+#include <stddef.h>
+
 typedef void* GWindow;
 
 typedef struct {

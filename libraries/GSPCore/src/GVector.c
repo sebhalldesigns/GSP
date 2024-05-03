@@ -1,5 +1,5 @@
-#include "GSPCore/GVector.h"
-#include "def/GVectorDef.h"
+#include "internal/include/GVector.h"
+#include "internal/def/GVectorDef.h"
 
 #include <stdlib.h>
 #include <string.h>

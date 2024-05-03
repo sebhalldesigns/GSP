@@ -1,6 +1,8 @@
 #ifndef GVECTOR_H
 #define GVECTOR_H
 
+// INTERNAL ONLY CLASS
+
 // GVector - a lightweight, dynamically resizable vector container for pointer types.
 // It is naturally zero-indexed
 
@@ -38,7 +40,5 @@ bool GVector_Contains(GVector vector, GVectorItem item);
 // returns index of item if it is in vector, or GVector Size (last element + 1) 
 // if it is not in the vector.
 size_t GVector_IndexOf(GVector vector, GVectorItem item);
-
-
 
 #endif // GVECTOR_H

@@ -1,7 +1,7 @@
 #ifndef GVECTORDEF_H
 #define GVECTORDEF_H
 
-#include "GSPCore/GVector.h"
+#include "internal/include/GVector.h"
 
 typedef struct {
     void* data;

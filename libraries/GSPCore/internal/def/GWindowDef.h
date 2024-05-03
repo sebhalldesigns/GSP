@@ -11,5 +11,6 @@ typedef struct {
     GWindowResizeEvent resizeEvent;
 } GWindowDef;
 
+void GWindowDef_Poll();
 
 #endif // GWINDOWDEF_H

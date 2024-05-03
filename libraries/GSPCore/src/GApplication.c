@@ -1,5 +1,5 @@
 #include "GSPCore/GApplication.h"
-#include "def/GApplicationDef.h"
+#include "internal/def/GApplicationDef.h"
 
 #include <stdlib.h>
 #include <stddef.h>
