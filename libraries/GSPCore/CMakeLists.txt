@@ -6,7 +6,7 @@ message("Building OpenGSP GSPCore")
 set(GSPCORE_SRC
     src/GSPCore.c
     src/GApplication.c
-    
+    src/GVector.c
 )
 
 

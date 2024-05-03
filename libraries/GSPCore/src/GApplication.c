@@ -11,7 +11,12 @@ GApplication GApplication_Init(GApplicationInfo info) {
         return NULL;
     }
 
-    GApplication app = calloc(1, sizeof(GApplicationDef));
+    app = calloc(1, sizeof(GApplicationDef));
+
+    if (app == NULL) {
+        return NULL;
+    }
+
     ((GApplicationDef*)app)->info = info;
 
     return app;
