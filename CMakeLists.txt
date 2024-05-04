@@ -4,6 +4,7 @@ project(Test)
 # Set C standard to C99
 set(CMAKE_C_STANDARD 99)
 
+add_compile_definitions(DEBUG)
 
 add_subdirectory(libraries)
 

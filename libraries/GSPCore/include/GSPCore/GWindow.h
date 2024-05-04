@@ -11,12 +11,19 @@ typedef struct {
     const char* title;
 } GWindowInfo;
 
-typedef void(*GWindowResizeEvent)();
+typedef struct {
+    int width;
+    int height;
+} GWindowSize;
+
+typedef void(*GWindowResizeDelegate)(GWindow window, GWindowSize size);
+typedef GWindowSize(*GWindowWillResizeDelegate)(GWindow window, GWindowSize proposedSize);
 
 GWindow GWindow_Init(GWindowInfo info);
 
-// connect events after creations
-void GWindow_SetResizeEvent(GWindow window, GWindowResizeEvent resizeEvent);
+// connect delegates after creation
+void GWindow_SetResizeDelegate(GWindow window, GWindowResizeDelegate resizeDelegate);
+void GWindow_SetWillResizeDelegate(GWindow window, GWindowWillResizeDelegate willResizeDelegate);
 
 
 #endif // GWINDOW_H

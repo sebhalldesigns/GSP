@@ -8,7 +8,8 @@ typedef struct {
     int width;
     int height;
     const char* title;
-    GWindowResizeEvent resizeEvent;
+    GWindowResizeDelegate resizeDelegate;
+    GWindowWillResizeDelegate willResizeDelegate;
 } GWindowDef;
 
 void GWindowDef_Poll();

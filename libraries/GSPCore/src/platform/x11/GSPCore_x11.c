@@ -4,6 +4,8 @@
 #include "GSPCore/GLog.h"
 #include "internal/def/GWindowDef.h"
 
+#include <unistd.h>
+
 int GSPRun(GApplication app) {
 
     GLog(INFO, "Starting GSPCore...");
@@ -18,6 +20,7 @@ int GSPRun(GApplication app) {
 
     while (1) {
         GWindowDef_Poll();
+        sleep(0);
     }
 
     return 0;

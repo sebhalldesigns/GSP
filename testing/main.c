@@ -4,6 +4,23 @@
 
 #include <stdio.h>
 
+GWindowSize WindowWillResize(GWindow window, GWindowSize proposedSize) {
+    printf("window will resize to %d %d \n", proposedSize.width, proposedSize.height);
+
+    int xrem = proposedSize.width % 100;
+    int yrem = proposedSize.height % 100;
+
+    proposedSize.width -= xrem;
+    proposedSize.height -= yrem;
+
+
+    printf("setting to %d %d \n", proposedSize.width, proposedSize.height);
+    return proposedSize;
+}
+
+void WindowResized(GWindow window, GWindowSize newSize) {
+    printf("window resized to %d %d \n", newSize.width, newSize.height);
+}
 
 typedef struct {
     float a;
@@ -25,6 +42,8 @@ void LaunchEvent() {
     };
 
     GWindow window = GWindow_Init(info);
+    GWindow_SetResizeDelegate(window, WindowResized);
+    GWindow_SetWillResizeDelegate(window, WindowWillResize);
 }
 
 int main() {
