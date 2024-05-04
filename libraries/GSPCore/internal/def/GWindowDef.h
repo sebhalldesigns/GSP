@@ -9,7 +9,9 @@ typedef struct {
     int height;
     const char* title;
     GWindowResizeDelegate resizeDelegate;
-    GWindowWillResizeDelegate willResizeDelegate;
+    GWindowPointerMoveDelegate pointerMoveDelegate;
+    GWindowButtonDownDelegate buttonDownDelegate;
+    GWindowButtonUpDelegate buttonUpDelegate;
 } GWindowDef;
 
 void GWindowDef_Poll();

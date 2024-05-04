@@ -21,6 +21,9 @@ static Atom deleteMessage;
 
 GVector windowVector = NULL;
 
+// functions defined in this file
+GWindowDef* TryGetWindow(Window xWindow);
+
 GWindow GWindow_Init(GWindowInfo info) {
 
     if (xDisplay == NULL) {
@@ -49,7 +52,7 @@ GWindow GWindow_Init(GWindowInfo info) {
     }
 
     XSetWMProtocols(xDisplay, xWindow, &deleteMessage, 1);
-    XSelectInput(xDisplay, xWindow, ExposureMask | KeyPressMask | ButtonPressMask | ResizeRedirectMask | StructureNotifyMask);
+    XSelectInput(xDisplay, xWindow, ExposureMask | KeyPressMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask | StructureNotifyMask);
     XMapWindow(xDisplay, xWindow);
 
     GWindowDef* window = malloc(sizeof(GWindowDef));
@@ -84,21 +87,46 @@ void GWindow_SetResizeDelegate(GWindow window, GWindowResizeDelegate resizeDeleg
     }
 }
 
-void GWindow_SetWillResizeDelegate(GWindow window, GWindowWillResizeDelegate willResizeDelegate) {
+void GWindow_SetPointerMoveDelegate(GWindow window, GWindowPointerMoveDelegate pointerMoveDelegate) {
     if (GVector_Contains(windowVector, window)) {
-        ((GWindowDef*)window)->willResizeDelegate = willResizeDelegate;
+        ((GWindowDef*)window)->pointerMoveDelegate = pointerMoveDelegate;
     }
 }
 
+void GWindow_SetButtonDownDelegate(GWindow window, GWindowButtonDownDelegate buttonDownDelegate) {
+    if (GVector_Contains(windowVector, window)) {
+        ((GWindowDef*)window)->buttonDownDelegate = buttonDownDelegate;
+    }
+}
+
+void GWindow_SetButtonUpDelegate(GWindow window, GWindowButtonUpDelegate buttonUpDelegate) {
+    if (GVector_Contains(windowVector, window)) {
+        ((GWindowDef*)window)->buttonUpDelegate = buttonUpDelegate;
+    }
+}
+
+
+
 void GWindowDef_Poll() {
+
+    XNextEvent(xDisplay, &xEvent);
 
     #ifdef DEBUG 
     {
-        //GLog(INFO, "Polling for X events");
+        GLog(INFO, "ConfigureNotify event");
     } 
     #endif
 
-    XNextEvent(xDisplay, &xEvent);
+    GWindowDef* windowDef = TryGetWindow(xEvent.xany.window);
+
+    if (windowDef == NULL) {
+        #ifdef DEBUG 
+        {
+            GLog(ERROR, "Event recieved for unknown window!");
+        } 
+        #endif
+        return;
+    }
 
     switch(xEvent.type) {
         case Expose:
@@ -114,97 +142,7 @@ void GWindowDef_Poll() {
            // }
 
             break;
-        case ResizeRequest:
-
-        /*XWindowAttributes attr;
-  XGetWindowAttributes(display, window, &attr);
-  if (attr.width != desired_width || attr.height != desired_height) {
-    XResizeWindow(display, window, desired_width, desired_height);
-  }*/
-
-            // not working properly
-            //return;
-
-            #ifdef DEBUG 
-            {
-                //GLog(INFO, "ConfigureNotify event");
-            } 
-            #endif
-
-            GWindowDef* resizeWindowDef = NULL;
-
-            for (int i = 0; i < GVector_Size(windowVector); i++) {
-                if (((GWindowDef*)GVector_Get(windowVector, i))->rawHandle == (GVectorItem)xEvent.xany.window) {
-                    resizeWindowDef = (GWindowDef*)GVector_Get(windowVector, i);
-                }
-            }
-
-            if (resizeWindowDef == NULL) {
-                #ifdef DEBUG 
-                {
-                    GLog(ERROR, "Event recieved for unknown window!");
-                } 
-                #endif
-                    
-                return;
-            }
-
-            int width = xEvent.xresizerequest.width;
-            int height = xEvent.xresizerequest.height;
-
-            printf("new size request: %d %d\n", width, height);
-
-            GWindowSize newSize = { width, height };
-
-            if (resizeWindowDef->willResizeDelegate != NULL) {
-
-                GWindowSize adjustedSize = (resizeWindowDef->willResizeDelegate)(resizeWindowDef, newSize);
-                if (newSize.width != adjustedSize.width || newSize.height != adjustedSize.height) {
-                    
-                    #ifdef DEBUG 
-                    {
-                        GLog(INFO, "New window size overridden to %d %d", adjustedSize.width, adjustedSize.height);
-                    } 
-                    #endif
-
-                    resizeWindowDef->width = adjustedSize.width;
-                    resizeWindowDef->height = adjustedSize.height;
-
-                    // i.e window size was overriden
-                    XResizeWindow(xDisplay, xEvent.xany.window, adjustedSize.width, adjustedSize.height);
- 
-                    return;
-                }
-            }
-
-            XConfigureWindow(xDisplay, xEvent.xany.window, CWWidth | CWHeight, &(XWindowChanges){.width = resizeWindowDef->width, .height = resizeWindowDef->height});
-
-            break;
         case ConfigureNotify:
-
-            #ifdef DEBUG 
-            {
-                //GLog(INFO, "ConfigureNotify event");
-            } 
-            #endif
-
-            GWindowDef* windowDef = NULL;
-
-            for (int i = 0; i < GVector_Size(windowVector); i++) {
-                if (((GWindowDef*)GVector_Get(windowVector, i))->rawHandle == (GVectorItem)xEvent.xany.window) {
-                    windowDef = (GWindowDef*)GVector_Get(windowVector, i);
-                }
-            }
-
-            if (windowDef == NULL) {
-                #ifdef DEBUG 
-                {
-                    GLog(ERROR, "Event recieved for unknown window!");
-                } 
-                #endif
-                    
-                return;
-            }
             
             int newWidth = xEvent.xconfigure.width;
             int newHeight = xEvent.xconfigure.height;
@@ -222,15 +160,36 @@ void GWindowDef_Poll() {
             }
             
             break;
+        case MotionNotify:
+
+            GWindowPoint motionLocation = {xEvent.xmotion.x, xEvent.xmotion.y};
+            if (windowDef->pointerMoveDelegate != NULL) {
+                (windowDef->pointerMoveDelegate)(windowDef, motionLocation);
+            }
+
+            break;
+        case ButtonPress:
+        
+            GWindowPoint buttonDownLocation = {xEvent.xbutton.x, xEvent.xbutton.y};
+            if (windowDef->buttonDownDelegate != NULL) {
+                (windowDef->buttonDownDelegate)(windowDef, buttonDownLocation, (uint8_t)xEvent.xbutton.button);
+            }
+
+            break;
+        case ButtonRelease:
+
+            GWindowPoint buttonUpLocation = {xEvent.xbutton.x, xEvent.xbutton.y};
+            if (windowDef->buttonUpDelegate != NULL) {
+                (windowDef->buttonUpDelegate)(windowDef, buttonUpLocation, (uint8_t)xEvent.xbutton.button);
+            }
+
+            break;
         case KeyPress:
             // Handle keyboard events
             XLookupString(&xEvent.xkey, eventText, sizeof(eventText), &eventKey, 0);
             printf("Key pressed: %s\n", eventText);
             break;
-        case ButtonPress:
-            // Handle mouse button events
-            printf("Mouse button pressed\n");
-            break;
+
         case ClientMessage:
             /*if (g_event.xclient.data.l[0] == g_delete_message) {
                 if (g_window_close_request_callback != NULL) {
@@ -245,4 +204,14 @@ void GWindowDef_Poll() {
             }*/
             break;
     }
+}
+
+GWindowDef* TryGetWindow(Window xWindow) {
+    for (int i = 0; i < GVector_Size(windowVector); i++) {
+        if (((GWindowDef*)GVector_Get(windowVector, i))->rawHandle == (GVectorItem)xEvent.xany.window) {
+            return (GWindowDef*)GVector_Get(windowVector, i);
+        }
+    }
+        
+    return NULL;
 }
