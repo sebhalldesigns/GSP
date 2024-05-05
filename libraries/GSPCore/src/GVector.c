@@ -62,25 +62,35 @@ void GVector_Remove(GVector vector, GVectorItem item) {
         return;
     }
 
-    void* data = ((GVectorDef*)vector)->data;
+    uintptr_t* data = ((GVectorDef*)vector)->data;
     size_t size = ((GVectorDef*)vector)->size;
 
+    if (size == 1 && data[0] == (uintptr_t)item) {
+        // last element in the vector, so free
+        free(data);
+        ((GVectorDef*)vector)->data = NULL;
+        ((GVectorDef*)vector)->size = 0;
+        return;
+    }
+
     for (size_t i = 0; i < size; i++) {
-        if (*((GVectorItem*)data + (sizeof(uintptr_t) * i)) == item) {
+        if (data[i] == (uintptr_t)item) {
 
             size_t itemsToMove = size - (i + 1);
-            memcpy(data + (sizeof(uintptr_t) * i), data + (sizeof(uintptr_t) * (i + 1)), sizeof(uintptr_t) * itemsToMove);
+            if (itemsToMove > 0) {
+                memcpy(&data[i], &data[i+1], sizeof(uintptr_t) * itemsToMove);
+            }
 
-            void* newData = realloc(data, sizeof(uintptr_t) * (size - 1));
-
-            ((GVectorDef*)vector)->size--;
+            uintptr_t* newData = realloc(data, sizeof(uintptr_t) * (size - 1));
 
             if (newData == NULL) {
                 DEBUG_LOG(ERROR, "Failed to resize vector at %lu", vector);
                 return;
             }
 
+            ((GVectorDef*)vector)->size--;
             ((GVectorDef*)vector)->data = newData;
+                
         }
     }
 

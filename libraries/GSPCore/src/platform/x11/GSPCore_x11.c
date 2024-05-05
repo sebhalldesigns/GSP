@@ -18,7 +18,7 @@ int GSPRun(GApplication app) {
 
     (((GApplicationDef*)app)->launchEvent)();
 
-    while (1) {
+    while (GWindowDef_NumberOfOpenWindows() > 0) {
         GWindowDef_Poll();
         sleep(0);
     }

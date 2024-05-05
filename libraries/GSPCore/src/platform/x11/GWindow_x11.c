@@ -21,7 +21,7 @@ static XEvent xEvent;
 static KeySym eventKey;
 static char eventText[255];
 
-static Atom deleteMessage;
+//static Atom deleteMessage;
 
 XVisualInfo* glxVisualInfo = NULL;
 GLXFBConfig bestGlxFbc;
@@ -79,7 +79,6 @@ GWindow GWindow_Init(GWindowInfo info) {
         return NULL;
     }
 
-    deleteMessage = XInternAtom(xDisplay, "WM_DELETE_WINDOW", False);
 
     if (glxVisualInfo == NULL) {
         TryMakeGlVisualInfo();
@@ -103,9 +102,13 @@ GWindow GWindow_Init(GWindowInfo info) {
 
     XStoreName(xDisplay, xWindow, info.title);
 
+    Atom deleteMessage = XInternAtom(xDisplay, "WM_DELETE_WINDOW", False);
+
     XSetWMProtocols(xDisplay, xWindow, &deleteMessage, 1);
     XSelectInput(xDisplay, xWindow, ExposureMask | KeyPressMask | ButtonPressMask | ButtonReleaseMask | PointerMotionMask | StructureNotifyMask);
     XMapWindow(xDisplay, xWindow);
+
+
 
     GWindowDef* window = malloc(sizeof(GWindowDef));
 
@@ -113,11 +116,12 @@ GWindow GWindow_Init(GWindowInfo info) {
         return NULL;
     }
 
+    window->xDeleteAtom = (uintptr_t)deleteMessage;
     window->title = info.title;
     window->rawHandle = (void*)xWindow;
     window->width = info.width;
     window->height = info.height;
-    window->glContext = context;
+    window->glContext = (uintptr_t)context;
 
     if (windowVector == NULL) {
         windowVector = GVector_Init();
@@ -132,6 +136,17 @@ GWindow GWindow_Init(GWindowInfo info) {
         return NULL;
     }
 
+}
+
+void GWindow_SetCloseDelegate(GWindow window, GWindowCloseDelegate closeDelegate) {
+    if (GVector_Contains(windowVector, window)) {
+        ((GWindowDef*)window)->closeDelegate = closeDelegate;
+    }
+}
+void GWindow_SetWillCloseDelegate(GWindow window, GWindowWillCloseDelegate willCloseDelegate) {
+    if (GVector_Contains(windowVector, window)) {
+        ((GWindowDef*)window)->willCloseDelegate = willCloseDelegate;
+    }
 }
 
 void GWindow_SetResizeDelegate(GWindow window, GWindowResizeDelegate resizeDelegate) {
@@ -158,23 +173,39 @@ void GWindow_SetButtonUpDelegate(GWindow window, GWindowButtonUpDelegate buttonU
     }
 }
 
+void GWindow_Close(GWindow window) {
+    if (GVector_Contains(windowVector, window)) {
+        glXMakeCurrent(xDisplay, 0, 0);
+        glXDestroyContext(xDisplay, (GLXContext)((GWindowDef*)window)->glContext);
+        XDestroyWindow(xDisplay, (XID)((GWindowDef*)window)->rawHandle);
 
+        GVector_Remove(windowVector, (GVectorItem)window);
+
+        DEBUG_LOG(INFO, "Closed GWindow at %lu", (uintptr_t)window);
+
+    }
+}
 
 void GWindowDef_Poll() {
+
+
+    if (!XPending(xDisplay)) { 
+        return;
+    }
 
     XNextEvent(xDisplay, &xEvent);
 
     GWindowDef* windowDef = TryGetWindow(xEvent.xany.window);
 
     if (windowDef == NULL) {
-        DEBUG_LOG(ERROR, "Event recieved for unknown window!");
+        //DEBUG_LOG(ERROR, "Event recieved for unknown window!");
         return;
     }
 
     switch(xEvent.type) {
         case Expose:
 
-            glXMakeCurrent(xDisplay, xEvent.xany.window,  windowDef->glContext);
+            glXMakeCurrent(xDisplay, xEvent.xany.window, (GLXContext)windowDef->glContext);
             glClearColor(0, 0.5, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
             glXSwapBuffers(xDisplay, xEvent.xany.window);
@@ -229,19 +260,34 @@ void GWindowDef_Poll() {
             break;
 
         case ClientMessage:
-            /*if (g_event.xclient.data.l[0] == g_delete_message) {
-                if (g_window_close_request_callback != NULL) {
+            
+            if (xEvent.xclient.data.l[0] == (Atom)windowDef->xDeleteAtom) {
 
-                    if (g_window_close_request_callback((uintptr_t) g_event.xany.window)) {
+                if (windowDef->willCloseDelegate != NULL) {
 
-                        gwin_destroy_window((uintptr_t) g_event.xany.window);
+                    if ((windowDef->willCloseDelegate)((GWindow)windowDef)) {
+                        if (windowDef->closeDelegate != NULL) {
+                            (windowDef->closeDelegate)((GWindow)windowDef);
+                        }
+
+                        GWindow_Close((GWindow)windowDef);
                     }
                 } else {
-                    gwin_destroy_window((uintptr_t) g_event.xany.window);
+                    
+                    if (windowDef->closeDelegate != NULL) {
+                        (windowDef->closeDelegate)((GWindow)windowDef);
+                    }
+
+                    GWindow_Close((GWindow)windowDef);
                 }
-            }*/
+            }
+
             break;
     }
+}
+
+size_t GWindowDef_NumberOfOpenWindows() {
+    return GVector_Size(windowVector);
 }
 
 GWindowDef* TryGetWindow(Window xWindow) {

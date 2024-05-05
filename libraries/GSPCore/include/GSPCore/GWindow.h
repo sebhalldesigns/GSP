@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef void* GWindow;
 
@@ -31,17 +32,22 @@ typedef enum {
 } GWindowGraphicsInterface;
 
 
+typedef void(*GWindowCloseDelegate)(GWindow window);
+typedef bool(*GWindowWillCloseDelegate)(GWindow window);
+
 typedef void(*GWindowResizeDelegate)(GWindow window, GWindowSize size);
 typedef void(*GWindowPointerMoveDelegate)(GWindow window, GWindowPoint newLocation);
 typedef void(*GWindowButtonDownDelegate)(GWindow window, GWindowPoint location, uint8_t button);
 typedef void(*GWindowButtonUpDelegate)(GWindow window, GWindowPoint location, uint8_t button);
 
 GWindow GWindow_Init(GWindowInfo info);
+void GWindow_Close(GWindow window);
 
 GWindowGraphicsInterface GWindow_GetGraphicsInterface(GWindow window);
 
-
 // connect delegates after creation
+void GWindow_SetCloseDelegate(GWindow window, GWindowCloseDelegate closeDelegate);
+void GWindow_SetWillCloseDelegate(GWindow window, GWindowWillCloseDelegate willCloseDelegate);
 void GWindow_SetResizeDelegate(GWindow window, GWindowResizeDelegate resizeDelegate);
 void GWindow_SetPointerMoveDelegate(GWindow window, GWindowPointerMoveDelegate pointerMoveDelegate);
 void GWindow_SetButtonDownDelegate(GWindow window, GWindowButtonDownDelegate buttonDownDelegate);
