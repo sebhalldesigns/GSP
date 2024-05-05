@@ -8,6 +8,7 @@ typedef struct {
     int width;
     int height;
     const char* title;
+    GWindowDrawDelegate drawDelegate;
     GWindowCloseDelegate closeDelegate;
     GWindowWillCloseDelegate willCloseDelegate;
     GWindowGraphicsInterface graphicsInterface;
@@ -17,6 +18,9 @@ typedef struct {
     GWindowButtonUpDelegate buttonUpDelegate;
     uintptr_t glContext;
     uintptr_t xDeleteAtom;
+    uint32_t simpleVAO;
+    uint32_t simpleShader;
+    uint32_t texture;
 } GWindowDef;
 
 void GWindowDef_Poll();

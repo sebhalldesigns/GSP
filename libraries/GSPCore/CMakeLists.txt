@@ -17,6 +17,7 @@ if (UNIX)
         src/GApplication.c
         src/GVector.c
         src/GLog.c
+        src/graphics/gl/GFrame_gl.c
     )
 
     # Set the C compiler flags
@@ -27,7 +28,7 @@ if (UNIX)
     target_include_directories(GSPCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include  ${CMAKE_CURRENT_SOURCE_DIR})
 
     # Link X11 library
-    target_link_libraries(GSPCore ${X11_LIBRARIES} GL)
+    target_link_libraries(GSPCore ${X11_LIBRARIES} GL GLEW m)
 else()
     message("Unknown platform")
 endif()

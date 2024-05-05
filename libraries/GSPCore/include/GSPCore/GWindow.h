@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "Graphics/GFrame.h"
+
 typedef void* GWindow;
 
 typedef struct {
@@ -31,6 +33,7 @@ typedef enum {
     METAL
 } GWindowGraphicsInterface;
 
+typedef void(*GWindowDrawDelegate)(GWindow window, GFrame surface);
 
 typedef void(*GWindowCloseDelegate)(GWindow window);
 typedef bool(*GWindowWillCloseDelegate)(GWindow window);
@@ -42,10 +45,12 @@ typedef void(*GWindowButtonUpDelegate)(GWindow window, GWindowPoint location, ui
 
 GWindow GWindow_Init(GWindowInfo info);
 void GWindow_Close(GWindow window);
+void GWindow_PresentFrame(GFrame frame);
 
 GWindowGraphicsInterface GWindow_GetGraphicsInterface(GWindow window);
 
 // connect delegates after creation
+void GWindow_SetDrawDelegate(GWindow window, GWindowDrawDelegate drawDelegate);
 void GWindow_SetCloseDelegate(GWindow window, GWindowCloseDelegate closeDelegate);
 void GWindow_SetWillCloseDelegate(GWindow window, GWindowWillCloseDelegate willCloseDelegate);
 void GWindow_SetResizeDelegate(GWindow window, GWindowResizeDelegate resizeDelegate);

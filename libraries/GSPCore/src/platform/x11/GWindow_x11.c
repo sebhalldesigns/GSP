@@ -1,5 +1,11 @@
 #include "GSPCore/GWindow.h"
 #include "internal/def/GWindowDef.h"
+
+#include <math.h>
+#define STB_IMAGE_IMPLEMENTATION
+   #include "stb_image.h"
+
+#include "internal/def/Graphics/GFrameDef.h"
 #include "internal/include/GVector.h"
 
 #include "GSPCore/GLog.h"
@@ -9,6 +15,7 @@
 #include <string.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glx.h>
 
@@ -55,10 +62,52 @@ int ctxErrorHandler( Display *dpy, XErrorEvent *ev) {
     return 0;
 }
 
+// Vertex shader source code
+const static char* vertexShaderSource = "                      \
+    #version 330 core                                   \
+    layout (location = 0) in vec3 aPos;                 \
+    layout (location = 1) in vec2 aTexCoord;            \
+                                                        \
+    out vec2 TexCoord;                                  \
+                                                        \
+    void main() {                                       \
+        gl_Position = vec4(aPos, 1.0);                  \
+        TexCoord = vec2(aTexCoord.x, aTexCoord.y)       \
+    }                                                   \
+";
+
+// Fragment shader source code
+const static char* fragmentShaderSource = "                    \
+    #version 330 core                                   \
+    out vec4 FragColor;                                 \
+                                                        \
+    in vec2 TexCoord;                                   \
+                                                        \
+    uniform sampler2D textureSampler;                   \
+                                                        \
+    void main() {                                       \
+        FragColor = texture(textureSampler, TexCoord);  \
+    }                                                   \
+";
+
+// Define the vertices and texture coordinates of the quad
+const static float vertices[] = {
+    // Positions          // Texture Coordinates
+        0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // Top Right
+        0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // Bottom Right
+    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // Bottom Left
+    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // Top Left 
+};
+const static unsigned int indices[] = {
+    0, 1, 3, // First Triangle
+    1, 2, 3  // Second Triangle
+};
+
 
 
 // functions defined in this file
 GWindowDef* TryGetWindow(Window xWindow);
+void SetupShadersForWindow(GWindowDef* windowDef);
 
 GWindow GWindow_Init(GWindowInfo info) {
 
@@ -89,6 +138,15 @@ GWindow GWindow_Init(GWindowInfo info) {
 
     if (glxVisualInfo != NULL) {
         TryMakeGlxWindow(&xWindow, &context, info);
+ 
+        glXMakeCurrent(xDisplay, xWindow, context);
+
+        if (glewInit() != GLEW_OK) {
+            DEBUG_LOG(ERROR, "Failed to initialize GLEW");
+            return NULL;
+        }
+
+
     }
 
     if (xWindow == None) {
@@ -116,6 +174,8 @@ GWindow GWindow_Init(GWindowInfo info) {
         return NULL;
     }
 
+            SetupShadersForWindow(window);
+
     window->xDeleteAtom = (uintptr_t)deleteMessage;
     window->title = info.title;
     window->rawHandle = (void*)xWindow;
@@ -136,6 +196,12 @@ GWindow GWindow_Init(GWindowInfo info) {
         return NULL;
     }
 
+}
+
+void GWindow_SetDrawDelegate(GWindow window, GWindowDrawDelegate drawDelegate) {
+    if (GVector_Contains(windowVector, window)) {
+        ((GWindowDef*)window)->drawDelegate = drawDelegate;
+    }
 }
 
 void GWindow_SetCloseDelegate(GWindow window, GWindowCloseDelegate closeDelegate) {
@@ -205,9 +271,61 @@ void GWindowDef_Poll() {
     switch(xEvent.type) {
         case Expose:
 
+            printf("EXPOSE\n");
             glXMakeCurrent(xDisplay, xEvent.xany.window, (GLXContext)windowDef->glContext);
-            glClearColor(0, 0.5, 1, 1);
+            glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+
+            glViewport(0,0,windowDef->width, windowDef->height);
+
+                   // Bind texture
+            glBindTexture(GL_TEXTURE_2D, windowDef->texture);
+
+             // Use shader program
+            glUseProgram(windowDef->simpleShader);
+            glBindVertexArray(windowDef->simpleVAO);
+
+     
+
+            // Draw quad
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+             
+
+
+            /*GFrameInfo frameInfo = { 
+                windowDef->width,
+                windowDef->height
+            };
+
+
+            GFrame frame = GFrame_Alloc(frameInfo);
+
+            GColor color = { 1.0, 0.0, 0.0, 1.0};
+            GRect rect = { 0.0, 0.0, 800.0, 600.0};
+            GFrame_Fill(frame, rect, color );
+
+            if (windowDef->drawDelegate != NULL) {
+                
+                
+                
+                //(windowDef->drawDelegate)((GWindow)windowDef);
+            }
+
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glViewport(0,0,windowDef->width, windowDef->height);
+
+             // Use shader program
+            glUseProgram(windowDef->simpleShader);
+            glBindVertexArray(windowDef->simpleVAO);
+
+            glBindTexture(GL_TEXTURE_2D, ((GFrameDef*)frame)->glBuffer);
+
+            // Draw quad
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+            GFrame_Free(frame);*/
+
             glXSwapBuffers(xDisplay, xEvent.xany.window);
 
             break;
@@ -438,4 +556,80 @@ void TryMakeGlxWindow(Window* xWindow, GLXContext* context, GWindowInfo info) {
 
     // Restore the original error handler
     XSetErrorHandler( oldHandler );
+}
+
+void SetupShadersForWindow(GWindowDef* windowDef) {
+
+    uint32_t VBO, EBO;
+
+    glGenVertexArrays(1, &windowDef->simpleVAO);
+
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    glBindVertexArray(windowDef->simpleVAO);
+
+
+    // Bind VBO and copy vertices into it
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Bind EBO and copy indices into it
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Set vertex attribute pointers
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    // Unbind VAO
+    glBindVertexArray(0);
+
+    // Create and compile vertex shader
+    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    // Create and compile fragment shader
+    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // Create shader program
+    windowDef->simpleShader = glCreateProgram();
+    glAttachShader(windowDef->simpleShader, vertexShader);
+    glAttachShader(windowDef->simpleShader, fragmentShader);
+    glLinkProgram(windowDef->simpleShader);
+
+    // Delete shaders (no longer needed)
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    DEBUG_LOG(INFO, "Set up OpenGL successfully");
+
+     // Load and create a texture
+    glGenTextures(1, &windowDef->texture);
+    glBindTexture(GL_TEXTURE_2D, windowDef->texture);
+
+    // Set texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    // Set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Load image data and generate texture
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load("./gsp_logo.png", &width, &height, &nrChannels, 0);
+    if (data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        printf("loaded image\n");
+    } else {
+        printf("Failed to load texture\n");
+    }
+    stbi_image_free(data);
 }
