@@ -19,12 +19,15 @@ if (UNIX)
         src/GLog.c
     )
 
+    # Set the C compiler flags
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+
     add_library(GSPCore STATIC ${GSPCORE_SRC})
 
     target_include_directories(GSPCore PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include  ${CMAKE_CURRENT_SOURCE_DIR})
 
     # Link X11 library
-    target_link_libraries(GSPCore ${X11_LIBRARIES})
+    target_link_libraries(GSPCore ${X11_LIBRARIES} GL)
 else()
     message("Unknown platform")
 endif()

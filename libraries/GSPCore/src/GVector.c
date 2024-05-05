@@ -1,8 +1,11 @@
+#include "GSPCore/GLog.h"
+
 #include "internal/include/GVector.h"
 #include "internal/def/GVectorDef.h"
 
 #include <stdlib.h>
 #include <string.h>
+
 
 // initialises vector
 GVector GVector_Init() {
@@ -10,8 +13,11 @@ GVector GVector_Init() {
     GVector vector = calloc(1, sizeof(GVectorDef));
 
     if (vector == NULL) {
+        DEBUG_LOG(ERROR, "Failed to allocate GVector!");
         return NULL;
     }
+
+    DEBUG_LOG(INFO, "Allocated GVector at %lu", vector);
 
     ((GVectorDef*)vector)->data = NULL;
     ((GVectorDef*)vector)->size = 0;
@@ -23,6 +29,8 @@ GVector GVector_Init() {
 void GVector_Free(GVector vector) {
 
     free(vector);
+    DEBUG_LOG(INFO, "Freed vector from %lu", vector);
+
 }
 
 // adds item to vector if it doesn't exist
@@ -32,16 +40,16 @@ void GVector_Add(GVector vector, GVectorItem item) {
         return;
     }
 
-    void* data = ((GVectorDef*)vector)->data;
+    uintptr_t* data = ((GVectorDef*)vector)->data;
     size_t size = ((GVectorDef*)vector)->size;
 
-    void* newData = realloc(data, sizeof(uintptr_t) * (size + 1));
+    uintptr_t* newData = realloc(data, sizeof(uintptr_t) * (size + 1));
 
     if (newData == NULL) {
         return;
     }
 
-    *((uintptr_t*)newData + (sizeof(uintptr_t) * size)) = (uintptr_t)item;
+    newData[size] = (uintptr_t)item;
 
     ((GVectorDef*)vector)->size++;
     ((GVectorDef*)vector)->data = newData;
@@ -59,7 +67,6 @@ void GVector_Remove(GVector vector, GVectorItem item) {
 
     for (size_t i = 0; i < size; i++) {
         if (*((GVectorItem*)data + (sizeof(uintptr_t) * i)) == item) {
-            // found item
 
             size_t itemsToMove = size - (i + 1);
             memcpy(data + (sizeof(uintptr_t) * i), data + (sizeof(uintptr_t) * (i + 1)), sizeof(uintptr_t) * itemsToMove);
@@ -69,11 +76,11 @@ void GVector_Remove(GVector vector, GVectorItem item) {
             ((GVectorDef*)vector)->size--;
 
             if (newData == NULL) {
+                DEBUG_LOG(ERROR, "Failed to resize vector at %lu", vector);
                 return;
             }
 
             ((GVectorDef*)vector)->data = newData;
-
         }
     }
 
@@ -91,7 +98,7 @@ size_t GVector_Size(GVector vector) {
 
 // returns item at index or NULL if the index is invalid.
 GVectorItem GVector_Get(GVector vector, size_t index) {
-    
+
     if (vector == NULL) {
         return NULL;
     }
@@ -100,7 +107,8 @@ GVectorItem GVector_Get(GVector vector, size_t index) {
         return NULL;
     }
 
-    return (GVectorItem)*((uintptr_t*)((GVectorDef*)vector)->data + (sizeof(uintptr_t) * index));
+    uintptr_t item = ((GVectorDef*)vector)->data[index];
+    return (GVectorItem)item;
 }
 
 // sets item if it is a valid index
@@ -114,7 +122,7 @@ void GVector_Set(GVector vector, size_t index, GVectorItem item) {
         return;
     }
 
-    *((uintptr_t*)((GVectorDef*)vector)->data + (sizeof(uintptr_t) * index)) = (uintptr_t)item;
+    ((GVectorDef*)vector)->data[index] = (uintptr_t) item;
 
 }
 
@@ -125,11 +133,11 @@ bool GVector_Contains(GVector vector, GVectorItem item) {
         return false;
     }
 
-    void* data = ((GVectorDef*)vector)->data;
+    uintptr_t* data = ((GVectorDef*)vector)->data;
     size_t size = ((GVectorDef*)vector)->size;
 
     for (size_t i = 0; i < size; i++) {
-        if (*((GVectorItem*)data + (sizeof(uintptr_t) * i)) == item) {
+        if (data[i] == (uintptr_t)item) {
             return true;
         }
     }
@@ -145,11 +153,11 @@ size_t GVector_IndexOf(GVector vector, GVectorItem item) {
         return SIZE_MAX;
     } 
 
-    void* data = ((GVectorDef*)vector)->data;
+    uintptr_t* data = ((GVectorDef*)vector)->data;
     size_t size = ((GVectorDef*)vector)->size;
 
     for (size_t i = 0; i < size; i++) {
-        if (*((GVectorItem*)data + (sizeof(uintptr_t) * i)) == item) {
+        if (data[i] == (uintptr_t)item) {
             return i;
         }
     }
@@ -157,3 +165,17 @@ size_t GVector_IndexOf(GVector vector, GVectorItem item) {
     return size + 1;
 }
 
+void GVector_Inspect(GVector vector) {
+
+    if (vector == NULL) {
+        return SIZE_MAX;
+    } 
+
+    uintptr_t* data = ((GVectorDef*)vector)->data;
+    size_t size = ((GVectorDef*)vector)->size;
+
+    for (size_t i = 0; i < size; i++) {
+        uintptr_t item = data[i];
+        DEBUG_LOG(INFO, "Vector %lu [%d] - %lu", vector, i, item);
+    }
+}

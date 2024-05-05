@@ -3,6 +3,9 @@ project(Test)
 
 # Set C standard to C99
 set(CMAKE_C_STANDARD 99)
+    # Set the C compiler flags
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+
 
 add_compile_definitions(DEBUG)
 

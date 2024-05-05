@@ -4,7 +4,7 @@
 #include "internal/include/GVector.h"
 
 typedef struct {
-    void* data;
+    uintptr_t* data;
     size_t size;
 } GVectorDef;
 

@@ -46,6 +46,8 @@ void LaunchEvent() {
     GWindow_SetPointerMoveDelegate(window, MouseMove);
     GWindow_SetButtonDownDelegate(window, MouseDown);
     GWindow_SetButtonUpDelegate(window, MouseUp);
+
+    GWindow window2 = GWindow_Init(info);
 }
 
 int main() {

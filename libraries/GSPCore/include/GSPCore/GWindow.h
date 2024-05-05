@@ -22,6 +22,14 @@ typedef struct {
     int y;
 } GWindowPoint;
 
+typedef enum {
+    NONE,
+    SGI,
+    OPENGL,
+    WEBGL,
+    METAL
+} GWindowGraphicsInterface;
+
 
 typedef void(*GWindowResizeDelegate)(GWindow window, GWindowSize size);
 typedef void(*GWindowPointerMoveDelegate)(GWindow window, GWindowPoint newLocation);
@@ -29,6 +37,9 @@ typedef void(*GWindowButtonDownDelegate)(GWindow window, GWindowPoint location, 
 typedef void(*GWindowButtonUpDelegate)(GWindow window, GWindowPoint location, uint8_t button);
 
 GWindow GWindow_Init(GWindowInfo info);
+
+GWindowGraphicsInterface GWindow_GetGraphicsInterface(GWindow window);
+
 
 // connect delegates after creation
 void GWindow_SetResizeDelegate(GWindow window, GWindowResizeDelegate resizeDelegate);

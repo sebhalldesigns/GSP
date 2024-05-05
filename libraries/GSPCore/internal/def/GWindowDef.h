@@ -8,10 +8,12 @@ typedef struct {
     int width;
     int height;
     const char* title;
+    GWindowGraphicsInterface graphicsInterface;
     GWindowResizeDelegate resizeDelegate;
     GWindowPointerMoveDelegate pointerMoveDelegate;
     GWindowButtonDownDelegate buttonDownDelegate;
     GWindowButtonUpDelegate buttonUpDelegate;
+    void* glContext;
 } GWindowDef;
 
 void GWindowDef_Poll();

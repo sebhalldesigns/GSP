@@ -41,4 +41,7 @@ bool GVector_Contains(GVector vector, GVectorItem item);
 // if it is not in the vector.
 size_t GVector_IndexOf(GVector vector, GVectorItem item);
 
+// logs contents of vector to console. Requires debug
+void GVector_Inspect(GVector vector);
+
 #endif // GVECTOR_H
