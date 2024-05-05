@@ -2,10 +2,13 @@
 #include "internal/def/GWindowDef.h"
 
 #include <math.h>
-#define STB_IMAGE_IMPLEMENTATION
-   #include "stb_image.h"
+
+#include "GSPCore/Graphics/GGI.h"
 
 #include "internal/def/Graphics/GFrameDef.h"
+#include "internal/def/Graphics/GShaderDef.h"
+#include "internal/def/Graphics/GTextureDef.h"
+#include "internal/def/Graphics/GVertexBufferDef.h"
 #include "internal/include/GVector.h"
 
 #include "GSPCore/GLog.h"
@@ -91,14 +94,14 @@ const static char* fragmentShaderSource = "                    \
 ";
 
 // Define the vertices and texture coordinates of the quad
-const static float vertices[] = {
+static float vertices[] = {
     // Positions          // Texture Coordinates
         0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // Top Right
         0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // Bottom Right
     -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // Bottom Left
     -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // Top Left 
 };
-const static unsigned int indices[] = {
+static unsigned int indices[] = {
     0, 1, 3, // First Triangle
     1, 2, 3  // Second Triangle
 };
@@ -279,11 +282,11 @@ void GWindowDef_Poll() {
             glViewport(0,0,windowDef->width, windowDef->height);
 
                    // Bind texture
-            glBindTexture(GL_TEXTURE_2D, windowDef->texture);
+            glBindTexture(GL_TEXTURE_2D, ((GTextureDef*)windowDef->texture)->glBuffer);
 
              // Use shader program
-            glUseProgram(windowDef->simpleShader);
-            glBindVertexArray(windowDef->simpleVAO);
+            glUseProgram(((GShaderDef*)windowDef->shader)->glShaderProgram);
+            glBindVertexArray(((GVertexBufferDef*)windowDef->vertexBuffer)->glVertexArrayBuffer);
 
      
 
@@ -560,76 +563,11 @@ void TryMakeGlxWindow(Window* xWindow, GLXContext* context, GWindowInfo info) {
 
 void SetupShadersForWindow(GWindowDef* windowDef) {
 
-    uint32_t VBO, EBO;
+    windowDef->vertexBuffer = GVertexBuffer_Alloc(vertices, 20, indices, 6);
 
-    glGenVertexArrays(1, &windowDef->simpleVAO);
-
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    glBindVertexArray(windowDef->simpleVAO);
-
-
-    // Bind VBO and copy vertices into it
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Bind EBO and copy indices into it
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Set vertex attribute pointers
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-
-    // Unbind VAO
-    glBindVertexArray(0);
-
-    // Create and compile vertex shader
-    unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    // Create and compile fragment shader
-    unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // Create shader program
-    windowDef->simpleShader = glCreateProgram();
-    glAttachShader(windowDef->simpleShader, vertexShader);
-    glAttachShader(windowDef->simpleShader, fragmentShader);
-    glLinkProgram(windowDef->simpleShader);
-
-    // Delete shaders (no longer needed)
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
+    windowDef->shader = GShader_AllocSystemShader(TEXTURE);
+    
     DEBUG_LOG(INFO, "Set up OpenGL successfully");
 
-     // Load and create a texture
-    glGenTextures(1, &windowDef->texture);
-    glBindTexture(GL_TEXTURE_2D, windowDef->texture);
-
-    // Set texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    // Set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Load image data and generate texture
-    int width, height, nrChannels;
-    unsigned char *data = stbi_load("./gsp_logo.png", &width, &height, &nrChannels, 0);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        printf("loaded image\n");
-    } else {
-        printf("Failed to load texture\n");
-    }
-    stbi_image_free(data);
+    windowDef->texture = GTexture_AllocFromFile("./gsp_logo.png");
 }

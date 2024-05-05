@@ -18,6 +18,9 @@ if (UNIX)
         src/GVector.c
         src/GLog.c
         src/graphics/gl/GFrame_gl.c
+        src/graphics/gl/GVertexBuffer_gl.c
+        src/graphics/gl/GShader_gl.c
+        src/graphics/gl/GTexture_gl.c
     )
 
     # Set the C compiler flags

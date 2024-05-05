@@ -3,6 +3,8 @@
 
 #include "GSPCore/GWindow.h"
 
+#include "GSPCore/Graphics/GGI.h"
+
 typedef struct {
     void* rawHandle;
     int width;
@@ -18,9 +20,9 @@ typedef struct {
     GWindowButtonUpDelegate buttonUpDelegate;
     uintptr_t glContext;
     uintptr_t xDeleteAtom;
-    uint32_t simpleVAO;
-    uint32_t simpleShader;
-    uint32_t texture;
+    GShader shader;
+    GTexture texture;
+    GVertexBuffer vertexBuffer;
 } GWindowDef;
 
 void GWindowDef_Poll();
