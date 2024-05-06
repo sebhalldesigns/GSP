@@ -2,7 +2,10 @@
 #include "GSPCore/GWindow.h"
 #include "GSPCore/GLog.h"
 
+#include "GSPCore/Graphics/GTextProvider.h"
+
 #include <stdio.h>
+
 
 void Draw(GWindow window) {
     printf("DRAW\n");
@@ -10,6 +13,12 @@ void Draw(GWindow window) {
 
 void WindowResized(GWindow window, GWindowSize newSize) {
     //printf("window resized to %d %d \n", newSize.width, newSize.height);
+
+    GTextProvider textProvider = GTextProvider_Alloc("Ubuntu Mono", 20.0);
+
+    GTexture texture = GTextProvider_Render(textProvider, "hello world from GSPCore!");
+
+    GTextProvider_Free(textProvider);
 }
 
 void MouseMove(GWindow window, GWindowPoint point) {

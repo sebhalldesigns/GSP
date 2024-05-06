@@ -9,6 +9,7 @@
 #include "GFrame.h"
 #include "GRenderPass.h"
 #include "GTexture.h"
+#include "GTextProvider.h"
 #include "GVertexBuffer.h"
 
 // GraphicsProvider is an abstraction over specific graphics APIs - OpenGL etc.

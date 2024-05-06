@@ -96,11 +96,12 @@ const static char* fragmentShaderSource = "                    \
 // Define the vertices and texture coordinates of the quad
 static float vertices[] = {
     // Positions          // Texture Coordinates
-        0.5f,  0.5f, 0.0f,   1.0f, 1.0f, // Top Right
-        0.5f, -0.5f, 0.0f,   1.0f, 0.0f, // Bottom Right
-    -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, // Bottom Left
-    -0.5f,  0.5f, 0.0f,   0.0f, 1.0f  // Top Left 
+        0.5f,  0.5f, 0.0f,   1.0f, 0.0f, // Top Right
+        0.5f, -0.5f, 0.0f,   1.0f, 1.0f, // Bottom Right
+    -0.5f, -0.5f, 0.0f,   0.0f, 1.0f, // Bottom Left
+    -0.5f,  0.5f, 0.0f,   0.0f, 0.0f  // Top Left 
 };
+
 static unsigned int indices[] = {
     0, 1, 3, // First Triangle
     1, 2, 3  // Second Triangle
@@ -569,5 +570,11 @@ void SetupShadersForWindow(GWindowDef* windowDef) {
     
     DEBUG_LOG(INFO, "Set up OpenGL successfully");
 
-    windowDef->texture = GTexture_AllocFromFile("./gsp_logo.png");
+        GTextProvider textProvider = GTextProvider_Alloc("Ubuntu Mono", 20.0);
+
+    windowDef->texture = GTextProvider_Render(textProvider, "hello world from GSPCore!");
+
+    GTextProvider_Free(textProvider);
+
+    //windowDef->texture = GTexture_AllocFromFile("./gsp_logo.png");
 }
